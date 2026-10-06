@@ -169,6 +169,7 @@ textarea{min-height:110px;resize:vertical}
     <div class="actions">
       <button class="btn" id="btnSave"><span class="l-en">Save</span><span class="l-dv">ސޭވް ކުރޭ</span><span class="l-ar">حفظ</span></button>
       <button class="btn ghost" id="btnPdf">PDF</button>
+      <button class="btn ghost" id="btnDownload"><span class="l-en">Download</span><span class="l-dv">ޑައުންލޯޑު</span><span class="l-ar">تنزيل</span></button>
       <button class="btn ghost" id="btnBack"><span class="l-en">Back to list</span><span class="l-dv">ލިސްޓަށް</span><span class="l-ar">القائمة</span></button>
       <span id="status"></span><span class="sp"></span>
       <button class="btn danger" id="btnDel"><span class="l-en">Delete</span><span class="l-dv">ފޮހެލާ</span><span class="l-ar">حذف</span></button>
@@ -414,11 +415,12 @@ $("langSel").onchange=e=>setLang(e.target.value);
 $("btnNew").onclick=()=>openForm(null);
 $("btnSave").onclick=save;
 $("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))) await save(); dirty=false; loadList() };
-$("btnPdf").onclick=makePdf;
-async function makePdf(){
+$("btnPdf").onclick=()=>{ const w=window.open("about:blank","_blank"); makePdf("preview",w); };
+$("btnDownload").onclick=()=>makePdf("download",null);
+async function makePdf(mode,win){
   if(dirty) await save();
   const name=`Observation ${cur.obsNo||""} - ${cur.student||""}${lang==="ar"?" (AR)":""}`.trim();
-  if(typeof html2pdf==="undefined" || lang==="ar"){ const o=document.title; document.title=name; window.print(); document.title=o; return }
+  if(typeof html2pdf==="undefined" || lang==="ar"){ if(win) win.close(); const o=document.title; document.title=name; window.print(); document.title=o; return }
   // apply the print layout on screen, capture it, then restore
   const css=[...document.styleSheets].flatMap(s=>{try{return [...s.cssRules]}catch(e){return[]}})
     .filter(r=>r.media&&r.media.mediaText==="print").flatMap(r=>[...r.cssRules]).filter(r=>r.selectorText).map(r=>r.cssText).join("\n");
@@ -428,11 +430,13 @@ async function makePdf(){
   $("status").textContent="PDF...";
   try{
     if(document.fonts&&document.fonts.ready) await document.fonts.ready;
-    await html2pdf().set({margin:[10,8,10,8],filename:name+".pdf",image:{type:"jpeg",quality:.95},
+    const worker=html2pdf().set({margin:[10,8,10,8],filename:name+".pdf",image:{type:"jpeg",quality:.95},
       html2canvas:{scale:2,scrollX:0,scrollY:0},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},
-      pagebreak:{mode:["css","legacy"],avoid:[".row",".dim",".total",".signs",".meta"]}}).from(sh).save();
+      pagebreak:{mode:["css","legacy"],avoid:[".row",".dim",".total",".signs",".meta"]}}).from(sh);
+    if(mode==="download"){ await worker.save(); }
+    else{ const url=await worker.outputPdf("bloburl"); if(win) win.location.href=url; else window.open(url,"_blank"); }
     $("status").textContent="";
-  }catch(e){ $("status").textContent="PDF: "+e.message; window.print() }
+  }catch(e){ if(win) win.close(); $("status").textContent="PDF: "+e.message; window.print() }
   finally{ st.remove(); sh.style.width=oldW; H.dir=oldDir; sh.removeAttribute("dir") }
 }
 $("btnDel").onclick=async()=>{ if(confirm(m("askDel"))){ await store.del(cur.id); dirty=false; loadList() } };
