@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="dv" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson Observation Form - Key Stage 1-5</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+/* Faruma.ttf ފައިލް index.html އާ އެއް ފޯލްޑަރުގައި ބެހެއްޓުމުން ފޮންޓް ލޯޑުވާނެ */
+@font-face{font-family:"Faruma";src:local("Faruma"),url("fonts/Faruma.woff2") format("woff2"),url("fonts/Faruma.woff") format("woff");font-display:swap}
+:root{--green:#0f5c4a;--green-d:#0a4034;--navy:#16263f;--paper:#fff;--bg:#eef2f0;--line:#c9d3cf;--muted:#5d6b66;--gold:#b98a1e;
+  --f-en:system-ui,"Segoe UI",Roboto,sans-serif;--f-dv:"Faruma","MV Faseyha","MV Boli",sans-serif;--f-ar:"Traditional Arabic","Amiri",serif}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--navy);font-size:16px}
+body.lang-en{font-family:var(--f-en);line-height:1.5}
+body.lang-dv{font-family:var(--f-dv);line-height:1.9}
+body.lang-ar{font-family:var(--f-ar);line-height:1.7;font-size:18px}
+/* language spans: only the chosen language on screen */
+.l-en,.l-dv,.l-ar{display:none;unicode-bidi:isolate}
+.l-en{font-family:var(--f-en);direction:ltr;line-height:1.45}
+.l-dv{font-family:var(--f-dv);direction:rtl;line-height:1.9}
+.l-ar{font-family:var(--f-ar);direction:rtl;line-height:1.7}
+body.lang-en .l-en,body.lang-dv .l-dv,body.lang-ar .l-ar{display:revert}
+.num{font-family:var(--f-en);direction:ltr;unicode-bidi:isolate}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hidden{display:none!important}
+.print-only{display:none}
+
+.bar{background:var(--green);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.bar h1{font-size:17px;margin:0;flex:1;font-weight:normal;min-width:160px}
+.bar .who{font-size:13px;opacity:.85;font-family:var(--f-en)}
+.bar select{background:var(--green-d);color:#fff;border:1px solid #ffffff60;border-radius:6px;padding:4px 8px}
+.btn{border:1px solid var(--green);background:var(--green);color:#fff;border-radius:6px;padding:6px 16px}
+.btn.ghost{background:transparent;color:var(--green)}
+.bar .btn.ghost{border-color:#ffffff80;color:#fff}
+.btn.danger{background:transparent;border-color:#a33;color:#a33}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--green-d)}
+.login .card{background:var(--paper);border-radius:10px;padding:32px 26px;max-width:440px;width:100%;text-align:center;border-top:6px solid var(--gold)}
+.login h2{margin:0 0 18px;font-size:21px;font-weight:normal}
+.langs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.langs button{border:1.5px solid var(--line);background:#fff;border-radius:6px;padding:10px 4px}
+.langs button.on{border-color:var(--green);background:var(--green);color:#fff}
+.gbtn{width:100%;padding:12px;font-size:17px}
+.note{background:#fff7e0;border:1px solid #e6cf8a;border-radius:6px;padding:8px 12px;font-size:14px;margin-top:16px}
+
+.list-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px}
+.list-head h2{margin:0;font-size:20px;font-weight:normal}
+.item{background:var(--paper);border:1px solid var(--line);border-inline-start:5px solid var(--green);border-radius:6px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.item .t{flex:1}
+.item .sub{color:var(--muted);font-size:14px}
+.item .score{font-family:var(--f-en);font-weight:700;color:var(--green);direction:ltr}
+.empty{text-align:center;color:var(--muted);padding:50px 10px;background:var(--paper);border:1px dashed var(--line);border-radius:6px}
+
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px}
+.sheet-title{text-align:center;margin-bottom:14px;font-size:18px}
+.sheet-title .l-en{font-weight:700}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:18px}
+.meta label{display:block;font-size:14px;color:var(--muted)}
+.meta .full{grid-column:1/-1}
+.meta input,.meta select,textarea{width:100%;border:1px solid var(--line);border-radius:5px;padding:6px 10px;background:#fff}
+textarea{min-height:110px;resize:vertical}
+.dim{background:var(--navy);color:#fff;padding:6px 14px;margin:20px 0 0;display:flex;justify-content:space-between;align-items:baseline;border-radius:5px 5px 0 0;gap:10px}
+.dim .l-en{font-weight:700;font-size:14px}
+.row{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;border:1px solid var(--line);border-top:0;padding:10px 14px}
+.rate{display:flex;gap:6px;direction:ltr}
+.rate button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-family:var(--f-en);font-weight:700}
+.rate button.on{background:var(--green);border-color:var(--green);color:#fff}
+.legend{font-size:13px;color:var(--muted);text-align:center;margin:4px 0 0}
+.total{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--navy);border-radius:5px;padding:10px 16px;margin:22px 0 14px;font-size:18px;gap:10px}
+.total b{font-family:var(--f-en);direction:ltr;font-size:22px}
+.foot{font-size:13px;color:var(--muted);margin-top:10px}
+.signs{display:grid;grid-template-columns:2fr 2fr 1.2fr;margin-top:16px;border:1px solid var(--line)}
+.signs>div{border:1px solid var(--line);padding:8px 10px}
+.signs input{width:100%;border:1px solid var(--line);border-radius:5px;padding:6px 8px;background:#fff}
+.sig{display:block;width:100%;max-width:300px;aspect-ratio:3/1;border:1px dashed var(--muted);border-radius:5px;background:#fff;touch-action:none;cursor:crosshair;margin:4px 0}
+.blank{height:60px}
+.clr{border:0;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:0}
+.actions{position:sticky;bottom:0;background:var(--bg);padding:12px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.actions .sp{flex:1}
+#status{font-size:14px;color:var(--muted)}
+
+@media(max-width:640px){
+  .row{grid-template-columns:1fr}
+  .rate{justify-content:space-between}
+  .rate button{width:46px;height:46px}
+  .meta{grid-template-columns:1fr}
+  .sheet{padding:12px}
+  .signs{grid-template-columns:1fr}
+}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:10.5pt!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .bar,.actions,.legend{display:none!important}
+  .print-only{display:block}
+  .wrap{max-width:none;padding:0}
+  .sheet{border:0;padding:0}
+  /* English + Dhivehi together; Arabic on its own */
+  body.lang-en .l-dv,body.lang-dv .l-en{display:revert}
+  body:not(.lang-ar) .row{direction:ltr;grid-template-columns:1fr auto 1fr}
+  body:not(.lang-ar) .row .l-en{order:1;text-align:left}
+  body:not(.lang-ar) .row .rate{order:2}
+  body:not(.lang-ar) .row .l-dv{order:3;text-align:right}
+  body:not(.lang-ar) .meta label{display:flex;justify-content:space-between;direction:ltr}
+  .row{grid-template-columns:1fr auto}
+  .meta{grid-template-columns:1fr 1fr}
+  .row{break-inside:avoid;padding:3px 8px;border-color:#000;font-size:9.5pt}
+  .row .l-en{font-size:9pt}
+  .dim{break-after:avoid;border-radius:0;margin-top:10px;padding:3px 8px}
+  .rate button{width:21px;height:21px;font-size:8.5pt;border-color:#888;padding:0}
+  .rate button.on{background:#000;border-color:#000;color:#fff}
+  .meta{gap:4px 16px;margin-bottom:8px}
+  .meta label{color:#000}
+  .meta input,.meta select,textarea{border:0;border-bottom:1px solid #000;border-radius:0;padding:0 4px;appearance:none;-webkit-appearance:none}
+  textarea{min-height:60px}
+  .bism{text-align:center;font-family:var(--f-ar);font-size:14pt}
+  .org{text-align:center;margin-bottom:6px}
+  .total,.signs{break-inside:avoid}
+  .signs{grid-template-columns:2fr 2fr 1.2fr;margin-top:14px;border-color:#000}
+  .signs>div{border-color:#000;padding:6px 8px}
+  .signs input{border:0;padding:0;appearance:none;-webkit-appearance:none}
+  .sig{border:0;max-width:200px}
+  .clr{display:none}
+  .foot{color:#000}
+}
+</style>
+</head>
+<body class="lang-dv">
+
+<div id="vLogin" class="login hidden">
+  <div class="card">
+    <h2><span class="l-en">Lesson Observation Form</span><span class="l-dv">ލެސަން އޮބްސަވޭޝަން ފޯމް</span><span class="l-ar">قائمة إشراف وتقييم الدرس</span></h2>
+    <div class="langs" id="langBtns">
+      <button data-l="dv" style="font-family:var(--f-dv)">ދިވެހި</button>
+      <button data-l="en" style="font-family:var(--f-en)">English</button>
+      <button data-l="ar" style="font-family:var(--f-ar)">العربية</button>
+    </div>
+    <button class="btn gbtn" id="btnLogin"><span class="l-en">Start</span><span class="l-dv">ފައްޓަވާ</span><span class="l-ar">ابدأ</span></button>
+    <div id="demoNote" class="note hidden"><span class="l-en">Forms are saved on this device only.</span><span class="l-dv">ފޯމުތައް ސޭވްވާނީ ހަމައެކަނި މި ޑިވައިސްގައި.</span><span class="l-ar">تُحفظ الاستمارات على هذا الجهاز فقط.</span></div>
+    <div id="loginErr" class="note hidden"></div>
+  </div>
+</div>
+
+<div id="vApp" class="hidden">
+  <div class="bar">
+    <h1><span class="l-en">Lesson Observation Form</span><span class="l-dv">ލެސަން އޮބްސަވޭޝަން ފޯމް</span><span class="l-ar">قائمة إشراف وتقييم الدرس</span></h1>
+    <span class="who" id="who"></span>
+    <select id="langSel" aria-label="Language"><option value="dv">ދިވެހި</option><option value="en">English</option><option value="ar">العربية</option></select>
+    <button class="btn ghost" id="btnLogout"><span class="l-en">Language</span><span class="l-dv">ބަސް</span><span class="l-ar">اللغة</span></button>
+  </div>
+
+  <div class="wrap" id="vList">
+    <div class="list-head">
+      <h2><span class="l-en">Saved observations</span><span class="l-dv">ސޭވްކުރި އޮބްޒަވޭޝަންތައް</span><span class="l-ar">الاستمارات المحفوظة</span></h2>
+      <button class="btn" id="btnNew"><span class="l-en">New form</span><span class="l-dv">އާ ފޯމެއް</span><span class="l-ar">استمارة جديدة</span></button>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <div class="wrap hidden" id="vForm">
+    <div class="sheet" id="sheet"></div>
+    <div class="actions">
+      <button class="btn" id="btnSave"><span class="l-en">Save</span><span class="l-dv">ސޭވް ކުރޭ</span><span class="l-ar">حفظ</span></button>
+      <button class="btn ghost" id="btnPdf">PDF</button>
+      <button class="btn ghost" id="btnBack"><span class="l-en">Back to list</span><span class="l-dv">ލިސްޓަށް</span><span class="l-ar">القائمة</span></button>
+      <span id="status"></span><span class="sp"></span>
+      <button class="btn danger" id="btnDel"><span class="l-en">Delete</span><span class="l-dv">ފޮހެލާ</span><span class="l-ar">حذف</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ 2. Criteria: [English, Dhivehi, Arabic] ============ */
+const DIMS = [
+ {t:["LESSON PLANNING","ލެސަން ޕްލޭނިންގ","تخطيط الدرس"], items:[
+  ["Delineates appropriate learning objectives.","އެކަށީގެންވާ އުނގެނުމުގެ މަގްސަދު (ތައް) ތަފްސީލުކޮށް ބަޔާންކުރުން","يحدد أهداف التعلم المناسبة."],
+  ["Selects appropriate teaching strategies.","އެކަށީގެންވާ އުނގަންނައިދިނުމުގެ ގޮތްތައް ކަނޑައެޅިފައިވުން","يختار استراتيجيات التدريس المناسبة."],
+  ["Uses effective learning activities and resources.","އުނގެނުމަށް ފައިދާހުރި ހަރަކާތްތަކާއި ވަސީލަތްތައް ބޭނުންކުރުން","يستخدم أنشطة وموارد تعليمية فعالة."],
+  ["Caters to students' diverse needs.","ތަފާތު ފެންވަރުގެ ދަރިވަރުންނަށް، އުނގެނުމަށް މަގުފަހިކުރުން","يلبي احتياجات الطلاب المتنوعة."],
+  ["Addresses all elements of the curriculum: knowledge, skills, values, KC, learning intention and success criteria","މަންހަޖުގައި ބަޔާންކޮށްފައިވާ ބައިތައް: މައުލޫމާތު، ހުނަރު، އަގު، ކީ ކޮމްޕީޓަންސީ، އިންޓެންޝަން އަދި ސަކްސަސް ކްރައިޓީރިއާ ހިމެނުން","يتناول جميع عناصر المنهج: المعرفة والمهارات والقيم والكفاءات الأساسية ونية التعلم ومعايير النجاح."],
+  ["Assessment strategies and tools stated","ފިލާވަޅު ވަޒަންކުރުމަށް ފިލާވަޅާގުޅޭ ޓޫލްސްތައް ބަޔާންކޮށްފައިވުން","ذكرت استراتيجيات وأدوات التقييم."],
+  ["Develops a workable time schedule.","މަސައްކަތް ކުރާނެގޮތުގެ ތާވަލެއް އެކުލަވާލައިފައިވުން","يطور جدولا زمنيا عمليا."]
+ ]},
+ {t:["LESSON IMPLEMENTATION","ލެސަން އިމްޕްލިމެންޓޭޝަން","تنفيذ الدرس"], items:[
+  ["Learning intentions were shared with the students","އުނގެނުމުގެ މަގުސަދު ދަރިވަރުންނާއި ހިއްސާކުރުން","تمت مشاركة نوايا التعلم مع الطلاب."],
+  ["Success criteria was discussed with the students","ކާމިޔާބީގެ މިންގަނޑުތަކާ ގުޅޭގޮތުން ދަރިވަރުންނާ މަޝްވަރާ ކުރުން","تمت مناقشة معايير النجاح مع الطلاب."],
+  ["Success criteria was displayed","ކާމިޔާބީގެ މިންގަނޑުތައް ފެންނާނެހެން ބެހެއްޓުނު","تم عرض معايير النجاح."],
+  ["Learning intentions were displayed","އުނގެނުމުގެ މަގުސަދުތައް ފެންނާނެހެން ބެހެއްޓުނު","تم عرض نوايا التعلم."],
+  ["Success criteria was assessed in the lesson","ފިލާވަޅުގައި ކާމިޔާބީގެ މިންގަނޑުތައް ވަޒަންކުރުން","تم تقييم معايير النجاح في الدرس."],
+  ["At least two of the key competencies were used","މަދުވެގެން ކީ ކޮމްޕެޓެންސީތަކުގެ ތެރެއިން ދެ ކޮމްޕެޓެންސީއެއް ބޭނުންކޮށްފައިވުން","تم استخدام اثنين على الأقل من الكفاءات الأساسية."],
+  ["Key competencies shared and discussed with the students","ކީ ކޮމްޕެޓެންސީތައް ދަރިވަރުންނާ ހިއްސާކޮށް މަޝްވަރާކުރުން","مشاركة ومناقشة الكفاءات الأساسية مع الطلاب."],
+  ["Lesson was prepared to achieve at least one shared value","ފިލާވަޅު ތައްޔާރުކޮށްފައިވަނީ މަދުވެގެން އެއް ހިއްސާކުރާ އަގު ހާސިލްކުރުމަށް","تم إعداد الدرس لتحقيق قيمة مشتركة واحدة على الأقل."],
+  ["Class Arrangement","ކިލާސް އަތުރާލުން","ترتيب الفصل."],
+  ["Set induction: Effective and interesting, linked prior learning to new learning","ފެށުން: ފައިދާހުރި އަދި ޝައުގުވެރި، ކުރީގެ މަޢުލޫމާތާއި އައު މަޢުލޫމާތާއި ގުޅުވުން","التمهيد: فعال ومثير للاهتمام ويربط التعلم السابق بالتعلم الجديد."],
+  ["Materials used appropriately","އެހީތައް އެކަށީގެންވާގޮތަށް ބޭނުންކޮށްފައިވުން","استخدام مناسب للأدوات."],
+  ["Establishes a supportive learning environment","އެހީތެރިވެދޭ އުނގެނުމުގެ މާހައުލެއް ގާއިމްކުރުން","يوفر بيئة تعليمية داعمة."],
+  ["Reinforces good behaviour","ރަނގަޅު ސުލޫކަށް ތަރުހީބުދިނުން","يعزز السلوك الجيد."],
+  ["Sustains students' interest","ދަރިވަރުންގެ ޝައުގުވެރިކަން ދެމެހެއްޓުން","يحافظ على اهتمام الطلاب."],
+  ["Useful classroom discussions and exercises","ފައިދާހުރި މަޝްވަރާތަކާއި ހަރަކާތްތައް ގެންދިޔުން","مناقشات وتمارين مفيدة في الفصل."],
+  ["Encourages Participation","ބައިވެރިވުމަށް ބާރުއެޅުން","يشجع على المشاركة."],
+  ["Sets and enforces rules and routines effectively.","ގަވާއިދުތައް ކަނޑައަޅައި އެ ތަންފީޒުކުރުން","يضع القواعد والإجراءات الروتينية ويفرضها بشكل فعال."],
+  ["Establishes interaction and rapport","މުޢާމަލާތްކޮށް ރަނގަޅު ގުޅުމެއް ގާއިމުކުރުން","يؤسس التفاعل والألفة."],
+  ["Shows care and concern for students.","ދަރިވަރުންނަށް އަޅާލުމާއި އޯގާތެރިކަން ދެއްކުން","يظهر الرعاية والاهتمام للطلاب."],
+  ["Uses voice and language appropriately.","އަޑާއި ބަސް އެކަށީގެންވާ ގޮތެއްގައި ބޭނުންކުރުން","يستخدم الصوت واللغة بشكل مناسب."],
+  ["Gives proper feedback to students.","ދަރިވަރުންނަށް އެކަށީގެންވާ ފީޑްބެކެއް ދިނުން","يعطي تغذية راجعة مناسبة للطلاب."],
+  ["Delivery of the lesson is clear and precise","ފިލާވަޅު ސާފު އަދި ސީދާ ގޮތެއްގައި ހުށައެޅުން","إيصال الدرس واضح ودقيق."],
+  ["Uses ICT/media/resource","އައިސީޓީ/މީޑިއާ/ވަސީލަތްތައް ބޭނުންކުރުން","يستخدم تكنولوجيا المعلومات والاتصالات / وسائل الإعلام / الموارد."],
+  ["Relates information to prior knowledge","ކުރިން ލިބިފައިވާ ޢިލްމާ އައު މަޢުލޫމާތު ގުޅުވާލުން","يربط المعلومات بالمعرفة السابقة."],
+  ["Shared up to date information within the subject area","މައުޟޫއާގުޅޭ ފަހުގެ މައުލޫމާތު ހިއްސާކުރުން","مشاركة معلومات محدثة داخل نطاق الموضوع."],
+  ["Encourages students to answer different levels of questions","ދަރިވަރުންނަށް އެކި ފެންވަރުގެ ސުވާލުތަކަށް ޖަވާބު ދިނުމަށް ބާރުއެޅުން","يشجع الطلاب على الإجابة على مستويات مختلفة من الأسئلة."],
+  ["Restates questions and answer when necessary","ބޭނުންވާ ވަގުތުތަކުގައި ސުވާލު އަދި ޖަވާބު އަލުން ކިޔައިދިނުން","يعيد صياغة الأسئلة والإجابة عند الضرورة."],
+  ["Organizes & monitors individual & group learning","ގްރޫޕް އަދި ވަކި ދަރިވަރުންގެ އުނގެނުން އިންތިޒާމުކޮށް މޮނިޓަރ ކުރުން","ينظم ويراقب التعلم الفردي والجماعي."],
+  ["Questions and responds appropriately.","އެކަށީގެންވާ ގޮތެއްގައި ސުވާލުކޮށް އަދި ޖަވާބު ދިނުން","يسأل ويجيب بشكل مناسب."],
+  ["Gives clear explanations and instructions.","ފިލާވަޅާއި، އިރުޝާދުތައް ސާފުކޮށް ބުނެދިނުން","يعطي شرحا وإرشادات واضحة."],
+  ["Presents with different levels of questions","އެކި ފެންވަރުގެ ސުވާލުތަކާއިއެކު ހުށަހެޅުން","يقدم مستويات مختلفة من الأسئلة."],
+  ["Interacts and communicates with students appropriately","އެކަށީގެންވާ ގޮތެއްގައި ދަރިވަރުންނާ މުޢާމަލާތުކުރުން","يتفاعل ويتواصل مع الطلاب بشكل مناسب."],
+  ["Differentiated materials and tasks were used","ވަކި ވަކި ދަރިވަރުންގެ ހުރި ތަފާތުބޭނުންތަކާއި، ހުނަރާއި އަދި ފެންވަރަށް ކިޔަވައިދިނުމުގެ އެހީ ބޭނުންކުރުމާއި މަސައްކަތް ހަވާލުކުރުން","تم استخدام مواد ومهام متمايزة."],
+  ["Uses probing questions when necessary","ބޭނުންވާ ވަގުތުތަކުގައި ޖަވާބަށް ވާސިލްވުމަށް އެހީތެރިވެދޭ އިތުރު ސުވާލު ބޭނުންކުރުން","يستخدم الأسئلة السابرة عند الضرورة."],
+  ["Establishes a collaborative environment with the students","ދަރިވަރުންނާ ގުޅިގެން މަސައްކަތްކުރާ މާހައުލެއް ގާއިމްކުރުން","ينشئ بيئة تعاونية مع الطلاب."],
+  ["Maintains a good rapport with the students.","ދަރިވަރުންނާ ރަނގަޅުގުޅުމެއް ދެމެހެއްޓުން","يحافظ على علاقة جيدة مع الطلاب."],
+  ["Presents a flexible learning environment","އެކި ހާލަތްތަކުގައި ބަދަލުގެނެވިގެންދާފަދަ އުނގެނުމުގެ މާހައުލެއް އުފެއްދުން","يوفر بيئة تعليمية مرنة."],
+  ["Content applied to real world situations","މައުލޫމާތު އާއްމު ދިރިއުޅުމާ ގުޅުވާލެވިފައިވުން","يطبق المحتوى على الواقع العملي في الحياة."],
+  ["Relevant and appropriate information delivered","އެކަށީގެންވާ އަދި ގުޅޭ މަޢުލޫމާތު ފޯރުކޮށްދީފައިވުން","قدم المعلومات المناسبة وذات الصلة بالموضوع."],
+  ["Presents relevant Examples relates to the content","ފިލާވަޅާ ގުޅޭ މިސާލުތައް ހުށަހެޅުން","يختار أمثلة ذات صلة بالمقرر."],
+  ["Misconceptions are identified and addressed","އޮޅުންއަރާ މަފްހޫމްތައް ދެނެގަނެ ސާފުކޮށްދިނުން","تحديد المفاهيم الخاطئة ومعالجتها."],
+  ["Challenging and authentic activities are given","ގޮންޖެހުންބޮޑު އަދި އާއްމު ދިރިއުޅުމާ ގުޅުވާލާފައިވާ މަސައްކަތްތައް ދިނުން","يعطي أنشطة متحدية وحقيقية."],
+  ["Emphasizes on exploration and creativity in the tasks","މަސައްކަތްތަކުގައި ހޯދުންތަކާއި އުފެއްދުންތެރި ކަމަށް ބާރުއެޅުން","يؤكد على الاستكشاف والإبداع في المهام."],
+  /* NOTE: this item is not in the Arabic form; Arabic text below is a translation */
+  ["Summarizes all the key points of the lesson","ފިލާވަޅުގެ ހުރިހާ މުހިންމު ނުކުތާތަކެއް ޚުލާސާކުރުން","يلخص جميع النقاط الرئيسية للدرس."]
+ ]},
+ {t:["EVALUATION","އިވެލުއޭޝަން","التقييم"], items:[
+  ["Provide constructive feedback in a timely manner","ބިނާކުރަނިވި ފީޑްބެކް ދޭންޖެހޭ ވަގުތުތަކުގައި ދިނުން","تقديم ملاحظات بناءة في الوقت المناسب."],
+  ["Achievement of learning objectives and success criteria was assessed","އުނގެނުމުގެ މަޤްޞަދުތައް ޙާޞިލުކުރުމާއި ކާމިޔާބީގެ މިންގަނޑުތައް ވަޒަންކުރުން","تم تقييم تحقيق أهداف التعلم ومعايير النجاح."],
+  ["Students level of understanding were analyzed before during and after instructions","ކިޔަވައިދިނުމުގެ ކުރިންނާއި، ކިޔަވައިދިނުމުގެ ތެރެއިންނާއި އަދި ކިޔަވައި ދިނުމަށްފަހުގައި ދަރިވަރުންގެ އުނގެނުމުގެ ފެންވަރު ދެނެގަތުން.","تم تحليل مستوى فهم الطلاب قبل وأثناء وبعد التدريس."],
+  ["The tool used to assess is appropriate and accurate","އެކަށީގެންވާ އަދި ސައްހަ އާލާތްތައް ވަޒަންކުރުމަށް ބޭނުންކުރުން","الأداة المستخدمة للتقييم مناسبة ودقيقة."]
+ ]}
+];
+const N = DIMS.reduce((a,d)=>a+d.items.length,0);   // 55 → 275
+
+/* three-language text helper */
+const T = (en,dv,ar,tag="span") => `<${tag} class="l-en">${en}</${tag}><${tag} class="l-dv">${dv}</${tag}><${tag} class="l-ar">${ar}</${tag}>`;
+const MSG = {
+  unsaved:{en:"Not saved",dv:"ސޭވް ނުކުރެވި",ar:"غير محفوظ"},
+  saving:{en:"Saving...",dv:"ސޭވް ކުރަނީ...",ar:"جارٍ الحفظ..."},
+  saved:{en:"Saved",dv:"ސޭވް ކުރެވިއްޖެ",ar:"تم الحفظ"},
+  failed:{en:"Could not save: ",dv:"ސޭވް ނުކުރެވުނު: ",ar:"تعذر الحفظ: "},
+  askSave:{en:"Save changes first?",dv:"ސޭވް ކުރަންތަ؟",ar:"حفظ التغييرات أولا؟"},
+  askDel:{en:"Delete this form?",dv:"މި ފޯމް ފޮހެލަންތަ؟",ar:"حذف هذه الاستمارة؟"},
+  loading:{en:"Loading...",dv:"ލޯޑް ވަނީ...",ar:"جارٍ التحميل..."},
+  loadErr:{en:"Could not load: ",dv:"ލޯޑް ނުކުރެވުނު: ",ar:"تعذر التحميل: "},
+  empty:{en:'No forms yet. Press "New form" to start.',dv:'އަދި ފޯމެއް ނެތް. "އާ ފޯމެއް" އަށް ފިތާލައްވާ.',ar:'لا توجد استمارات بعد. اضغط "استمارة جديدة".'},
+  noName:{en:"(no name)",dv:"(ނަން ނެތް)",ar:"(بدون اسم)"},
+  domain:{en:"Only these emails are allowed: @",dv:"ހުއްދަ އޮތީ ހަމައެކަނި މި އީމެއިލްތަކަށް: @",ar:"يسمح فقط بهذا البريد: @"},
+  assessed:{en:"Assessed / ވަޒަންކުރެވޭ",dv:"Assessed / ވަޒަންކުރެވޭ",ar:"قُيِّمت"},
+  nonAssessed:{en:"Non Assessed / ނުކުރެވޭ",dv:"Non Assessed / ނުކުރެވޭ",ar:"لم تُقيَّم"}
+};
+let lang="dv";
+const m = k => MSG[k][lang];
+
+/* ============ 3. Storage ============ */
+const DEMO = true;   // forms are stored on this device only (localStorage)
+let auth, db, user=null, cur=null, dirty=false, listCache=[];
+const $ = id => document.getElementById(id);
+const FIELDS = ["topic","cls","obsNo","date","assessed","student","supervisor","comments","supDate"];
+const SIGS = ["sup"];
+const store = DEMO ? {
+  all(){ try{return JSON.parse(localStorage.getItem("tpobs_demo")||"[]")}catch(e){return[]} },
+  async list(){ return this.all().sort((a,b)=>b.updated-a.updated) },
+  async save(d){ const a=this.all().filter(x=>x.id!==d.id); a.push(d); localStorage.setItem("tpobs_demo",JSON.stringify(a)) },
+  async del(id){ localStorage.setItem("tpobs_demo",JSON.stringify(this.all().filter(x=>x.id!==id))) }
+} : {
+  col(){ return db.collection("users").doc(user.uid).collection("observations") },
+  async list(){ const s=await this.col().orderBy("updated","desc").get(); return s.docs.map(x=>x.data()) },
+  async save(d){ await this.col().doc(d.id).set(d) },
+  async del(id){ await this.col().doc(id).delete() }
+};
+
+/* ============ 4. UI ============ */
+function setLang(l){
+  lang=l; document.body.className="lang-"+l;
+  document.documentElement.lang=l; document.documentElement.dir = l==="en"?"ltr":"rtl";
+  try{localStorage.setItem("tpobs_lang",l)}catch(e){}
+  $("langSel").value=l;
+  document.querySelectorAll("#langBtns button").forEach(b=>b.classList.toggle("on",b.dataset.l===l));
+  const s=$("f_assessed"); if(s){ s.options[0].text=m("assessed"); s.options[1].text=m("nonAssessed") }
+  if(!$("vList").classList.contains("hidden")) renderList();
+  if(dirty) $("status").textContent=m("unsaved"); else $("status").textContent="";
+}
+function show(v){ ["vLogin","vApp"].forEach(x=>$(x).classList.toggle("hidden",x!==v)) }
+function page(p){ $("vList").classList.toggle("hidden",p!=="list"); $("vForm").classList.toggle("hidden",p!=="form"); window.scrollTo(0,0) }
+function score(d){ const v=Object.values(d.r||{}); return {sum:v.reduce((a,b)=>a+b,0), max:v.length*5, n:v.length} }
+const scoreText = s => `${s.sum} / ${s.n===N||s.n===0?275:s.max}`;
+
+function buildSheet(){
+  const fld=(id,en,dv,ar,extra="",cls="")=>`<div class="${cls}"><label>${T(en,dv,ar)}</label><input id="f_${id}" ${extra}></div>`;
+  let h=`<div class="print-only bism">بسم الله الرحمن الرحيم</div>
+  <div class="print-only org">${T("Kulliyya of Education","ކުއްލިއްޔާ އޮފް އެޑިއުކޭޝަން","كلية التربية","div")}</div>
+  <div class="sheet-title">${T("LESSON OBSERVATION FORM - KEY STAGE <span class='num'>1-5</span>","ލެސަން އޮބްސަވޭޝަން ފޯމް - ކީ ސްޓޭޖް <span class='num'>1-5</span>","قائمة إشراف وتقييم الدرس <span class='num'>(KS 1-5)</span>","div")}</div>
+  <div class="meta">
+    ${fld("topic","Topic:","ސުރުޚީ:","موضوع الدرس:","","full")}
+    ${fld("cls","Class:","ކްލާސް:","الفصل:")}
+    ${fld("obsNo","Observation No:","އޮބްޒަވޭޝަން ނަންބަރު:","رقم التقييم:",'inputmode="numeric"')}
+    ${fld("date","Date:","ތާރީޚް:","التاريخ:",'type="date"')}
+    <div><label>${T("Assessed / Non Assessed","ވަޒަންކުރެވޭ / ނުކުރެވޭ","قيمت / لم تقيم")}</label><select id="f_assessed"><option value="Assessed"></option><option value="Non Assessed"></option></select></div>
+    ${fld("student","Student Teacher's Name:","ދަސްކުރާ މުދައްރިސްގެ ނަން:","اسم الطالب / الطالبة:")}
+    ${fld("supervisor","Supervisor:","ސުޕަވައިޒަރު:","اسم المشرف:")}
+  </div>
+  <p class="legend">${T("5 Excellent, 4 Very Good, 3 Good, 2 Satisfactory, 1 Needs Improvement","<span class='num'>5</span> އެންމެ ރަނގަޅު، <span class='num'>4</span> ވަރަށް ރަނގަޅު، <span class='num'>3</span> ރަނގަޅު، <span class='num'>2</span> އެކަށީގެންވޭ، <span class='num'>1</span> ރަނގަޅުކުރަންޖެހޭ","<span class='num'>5</span> ممتاز، <span class='num'>4</span> جيد جدا، <span class='num'>3</span> جيد، <span class='num'>2</span> مقبول، <span class='num'>1</span> يحتاج إلى تحسين")}</p><div id="rows">`;
+  let i=0;
+  DIMS.forEach(d=>{
+    h+=`<div class="dim">${T(...d.t)}</div>`;
+    d.items.forEach(it=>{
+      h+=`<div class="row">${T(it[0],it[1],it[2],"div")}<div class="rate" data-i="${i}">`+
+         [5,4,3,2,1].map(n=>`<button type="button" data-v="${n}" aria-label="${n}">${n}</button>`).join("")+`</div></div>`;
+      i++;
+    });
+  });
+  h+=`</div>
+  <div class="total"><span>${T("Total Marks:","ޖުމްލަ މާކްސް:","مجموع الدرجات:")}</span><b id="total">0 / 275</b></div>
+  <label>${T("Comments:","ކޮމެންޓް:","الملاحظة:")}</label>
+  <textarea id="f_comments"></textarea>
+  <div class="signs">
+    <div>${T("Supervisor:","ސުޕަވައިޒަރު:","اسم المشرف:")} <span id="p_sup"></span></div>
+    <div>${T("Sign:","ސޮއި:","التوقيع:")}<canvas class="sig" id="sig_sup" width="600" height="200"></canvas><button type="button" class="clr" data-c="sup">${T("Clear","ފޮހެލާ","مسح")}</button></div>
+    <div>${T("Date:","ތާރީޚް:","التاريخ:")}<input type="date" id="f_supDate"></div>
+    <div>${T("Student teacher:","ދަސްކުރާ މުދައްރިސް:","اسم الطالب:")} <span id="p_stu"></span></div>
+    <div>${T("Sign:","ސޮއި:","التوقيع:")}<div class="blank"></div></div>
+    <div>${T("Date:","ތާރީޚް:","التاريخ:")}</div>
+  </div>
+  <p class="foot">${T("* If any of the criteria is not assessed, please exclude from the total marks.","* އެސެސްކުރުމުގައި އެއްވެސް ބައެއް ނުހިމެނޭނަމަ އެބަޔަށްވާ މާކްސް ޖުމްލައިން އުނިކުރެއްވުން އެދެމެވެ.","* إذا لم يتم تقييم أي من المعايير، فيرجى الاستبعاد من إجمالي الدرجات.","div")}</p>`;
+  $("sheet").innerHTML=h;
+  $("rows").addEventListener("click",e=>{
+    const b=e.target.closest("button[data-v]"); if(!b) return;
+    const i=b.parentElement.dataset.i, v=+b.dataset.v;
+    if(cur.r[i]===v) delete cur.r[i]; else cur.r[i]=v;   // tap again to clear
+    paint(); touch();
+  });
+  $("sheet").querySelectorAll("input,select,textarea").forEach(e=>e.addEventListener("input",()=>{touch(); paint()}));
+}
+function paint(){
+  document.querySelectorAll(".rate").forEach(r=>{
+    const v=cur.r[r.dataset.i];
+    r.querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.v===v));
+  });
+  $("total").textContent=scoreText(score(cur));
+  $("p_sup").textContent=$("f_supervisor").value; $("p_stu").textContent=$("f_student").value;
+}
+function touch(){ dirty=true; $("status").textContent=m("unsaved") }
+function openForm(d){
+  cur = d ? JSON.parse(JSON.stringify(d)) : {id:Date.now().toString(36)+Math.random().toString(36).slice(2,7), r:{}, assessed:"Assessed",
+        date:new Date().toISOString().slice(0,10), supervisor:(listCache[0]||{}).supervisor||""};
+  cur.r=cur.r||{};
+  FIELDS.forEach(f=>$("f_"+f).value=cur[f]||(f==="assessed"?"Assessed":""));
+  SIGS.forEach(sigLoad);
+  dirty=false; $("status").textContent=""; paint(); page("form");
+}
+async function save(){
+  FIELDS.forEach(f=>cur[f]=$("f_"+f).value.trim());
+  cur.updated=Date.now(); cur.email=user.email||""; cur.lang=lang;
+  $("status").textContent=m("saving");
+  try{ await store.save(cur); dirty=false; $("status").textContent=m("saved"); return true }
+  catch(e){ $("status").textContent=m("failed")+e.message; return false }
+}
+function renderList(){
+  const L=$("list"); L.innerHTML="";
+  if(!listCache.length){ L.innerHTML=`<div class="empty">${m("empty")}</div>`; return }
+  listCache.forEach(d=>{
+    const el=document.createElement("div"); el.className="item"; el.tabIndex=0;
+    const t=document.createElement("div"); t.className="t";
+    const n=document.createElement("div"); n.textContent=d.student||m("noName");
+    const sub=document.createElement("div"); sub.className="sub"; sub.textContent=[d.topic,d.cls,d.date].filter(Boolean).join(" | ");
+    t.append(n,sub);
+    const sc=document.createElement("div"); sc.className="score"; sc.textContent=scoreText(score(d));
+    el.append(t,sc); el.onclick=()=>openForm(d); el.onkeydown=e=>{if(e.key==="Enter")openForm(d)};
+    L.append(el);
+  });
+}
+async function loadList(){
+  page("list"); $("list").innerHTML=`<div class="empty">${m("loading")}</div>`;
+  try{ listCache=await store.list() }catch(e){ $("list").innerHTML=`<div class="empty">${m("loadErr")+e.message}</div>`; return }
+  renderList();
+}
+function signedIn(u){ user=u; $("who").textContent=u.email||""; show("vApp"); loadList() }
+
+/* signature pads */
+function sigClear(k){ const c=$("sig_"+k); c.getContext("2d").clearRect(0,0,c.width,c.height) }
+function sigLoad(k){ sigClear(k); const d=cur["sig_"+k]; if(!d) return;
+  const im=new Image(); im.onload=()=>$("sig_"+k).getContext("2d").drawImage(im,0,0); im.src=d }
+function sigInit(k){
+  const c=$("sig_"+k), x=c.getContext("2d"); let down=false;
+  const pos=e=>{ const r=c.getBoundingClientRect(); return [(e.clientX-r.left)*c.width/r.width,(e.clientY-r.top)*c.height/r.height] };
+  c.addEventListener("pointerdown",e=>{ e.preventDefault(); down=true; c.setPointerCapture(e.pointerId);
+    x.lineWidth=3.5; x.lineCap="round"; x.lineJoin="round"; x.strokeStyle="#0b1b3a"; x.beginPath(); const p=pos(e); x.moveTo(p[0],p[1]); x.lineTo(p[0]+.1,p[1]); x.stroke() });
+  c.addEventListener("pointermove",e=>{ if(!down) return; const p=pos(e); x.lineTo(p[0],p[1]); x.stroke() });
+  const up=()=>{ if(!down) return; down=false; cur["sig_"+k]=c.toDataURL("image/png"); touch() };
+  c.addEventListener("pointerup",up); c.addEventListener("pointercancel",up);
+}
+
+/* ============ 5. Start ============ */
+buildSheet();
+SIGS.forEach(sigInit);
+document.querySelectorAll(".clr").forEach(b=>b.onclick=()=>{ sigClear(b.dataset.c); cur["sig_"+b.dataset.c]=""; touch() });
+let saved="dv"; try{ saved=localStorage.getItem("tpobs_lang")||"dv" }catch(e){}
+setLang(saved);
+document.querySelectorAll("#langBtns button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+$("langSel").onchange=e=>setLang(e.target.value);
+$("btnNew").onclick=()=>openForm(null);
+$("btnSave").onclick=save;
+$("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))) await save(); dirty=false; loadList() };
+$("btnPdf").onclick=makePdf;
+async function makePdf(){
+  if(dirty) await save();
+  const name=`Observation ${cur.obsNo||""} - ${cur.student||""}${lang==="ar"?" (AR)":""}`.trim();
+  if(typeof html2pdf==="undefined" || lang==="ar"){ const o=document.title; document.title=name; window.print(); document.title=o; return }
+  // apply the print layout on screen, capture it, then restore
+  const css=[...document.styleSheets].flatMap(s=>{try{return [...s.cssRules]}catch(e){return[]}})
+    .filter(r=>r.media&&r.media.mediaText==="print").flatMap(r=>[...r.cssRules]).filter(r=>r.selectorText).map(r=>r.cssText).join("\n");
+  const st=document.createElement("style"); st.textContent=css; document.head.append(st);
+  const sh=$("sheet"), oldW=sh.style.width; sh.style.width="700px";
+  const H=document.documentElement, oldDir=H.dir; sh.dir=oldDir; H.dir="ltr"; window.scrollTo(0,0);
+  $("status").textContent="PDF...";
+  try{
+    if(document.fonts&&document.fonts.ready) await document.fonts.ready;
+    await html2pdf().set({margin:[10,8,10,8],filename:name+".pdf",image:{type:"jpeg",quality:.95},
+      html2canvas:{scale:2,scrollX:0,scrollY:0},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},
+      pagebreak:{mode:["css","legacy"],avoid:[".row",".dim",".total",".signs",".meta"]}}).from(sh).save();
+    $("status").textContent="";
+  }catch(e){ $("status").textContent="PDF: "+e.message; window.print() }
+  finally{ st.remove(); sh.style.width=oldW; H.dir=oldDir; sh.removeAttribute("dir") }
+}
+$("btnDel").onclick=async()=>{ if(confirm(m("askDel"))){ await store.del(cur.id); dirty=false; loadList() } };
+window.addEventListener("beforeunload",e=>{ if(dirty){ e.preventDefault(); e.returnValue="" } });
+
+if(DEMO){
+  $("demoNote").classList.remove("hidden"); show("vLogin");
+  $("btnLogin").onclick=()=>signedIn({uid:"local",email:"",displayName:""});
+  $("btnLogout").onclick=()=>show("vLogin");
+}else{
+  firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore();
+  const err=t=>{ $("loginErr").textContent=t; $("loginErr").classList.remove("hidden") };
+  auth.onAuthStateChanged(u=>{
+    if(!u){ show("vLogin"); return }
+    if(ALLOWED_DOMAIN && !(u.email||"").endsWith("@"+ALLOWED_DOMAIN)){ auth.signOut(); err(m("domain")+ALLOWED_DOMAIN); return }
+    signedIn(u);
+  });
+  $("btnLogin").onclick=()=>{
+    const p=new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(p).catch(e=>{ if(e.code==="auth/popup-blocked") auth.signInWithRedirect(p); else err(e.message) });
+  };
+  $("btnLogout").onclick=()=>auth.signOut();
+}
+</script>
+</body>
+</html>
