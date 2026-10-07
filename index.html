@@ -90,17 +90,69 @@ textarea{min-height:110px;resize:vertical}
 .sig{display:block;width:100%;max-width:300px;aspect-ratio:3/1;border:1px dashed var(--muted);border-radius:5px;background:#fff;touch-action:none;cursor:crosshair;margin:4px 0}
 .blank{height:60px}
 .clr{border:0;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:0}
-.actions{position:sticky;bottom:0;background:var(--bg);padding:12px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .actions .sp{flex:1}
-#status{font-size:14px;color:var(--muted)}
+#status{font-size:13px;color:var(--muted)}
+
+/* ===== v1.5 — cards, progress, result, review ===== */
+#vForm{padding-bottom:14px}
+.sheet{background:transparent;border:0;padding:0;border-radius:0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.card-h{margin:0 0 12px;font-size:16px;font-weight:700;color:var(--green);padding-bottom:8px;border-bottom:2px solid var(--gold)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.field.full{grid-column:1/-1}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 12px;background:#fff;font-size:16px}
+.fb{margin:0}
+.fb label{display:block;font-size:14px;font-weight:600;color:var(--green);margin:14px 0 5px}
+.fb:first-of-type label{margin-top:0}
+.fb textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 12px;background:#fff;min-height:88px;font-size:16px;resize:vertical;line-height:1.7}
+/* progress chips */
+.progress{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 13px;color:var(--muted)}
+.chip.done{border-color:var(--green);color:var(--green);background:#eaf4f0}
+.chip .tick{font-weight:700;font-family:var(--f-en)}
+/* sticky bottom bar: live result + actions */
+.formbar{position:sticky;bottom:0;z-index:6;background:var(--bg);padding:8px 0 10px;margin-top:6px}
+.result{background:var(--green);color:#fff;border-radius:12px;padding:11px 16px;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between;gap:10px;border:2px solid var(--gold);flex-wrap:wrap}
+.result .rs-l{display:flex;align-items:baseline;gap:4px}
+.result .rs-score{font-family:var(--f-en);font-weight:700;font-size:23px;direction:ltr}
+.result .rs-pct{font-family:var(--f-en);opacity:.92;direction:ltr;font-size:15px}
+.result .rs-rated{font-family:var(--f-en);font-size:12px;opacity:.8;direction:ltr}
+.result .rs-level{background:var(--gold);color:#1c1200;border-radius:20px;padding:4px 13px;font-size:13px;font-weight:700}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#1c1200}
+/* review modal */
+.modal{position:fixed;inset:0;background:rgba(10,40,52,.55);display:flex;align-items:flex-start;justify-content:center;padding:18px;z-index:60;overflow:auto}
+.modal .box{background:var(--paper);border-radius:14px;max-width:640px;width:100%;overflow:hidden;border-top:6px solid var(--gold);margin:auto}
+.modal .box-h{background:var(--green);color:#fff;padding:14px 18px;font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.modal .box-h .x{background:none;border:0;color:#fff;font-size:22px;line-height:1;padding:0 4px}
+.modal .box-b{padding:18px}
+.rev-result{background:var(--green);color:#fff;border-radius:10px;padding:14px;text-align:center;margin-bottom:14px;border:2px solid var(--gold)}
+.rev-result .big{font-family:var(--f-en);font-size:30px;font-weight:700;direction:ltr}
+.rev-result .pc{font-family:var(--f-en);font-size:16px;opacity:.92;direction:ltr}
+.rev-result .lvl{display:inline-block;background:var(--gold);color:#1c1200;border-radius:20px;padding:4px 16px;font-weight:700;margin-top:8px}
+.rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;font-size:15px;margin-bottom:6px}
+.rev-grid .k{color:var(--muted);font-size:12px;display:block}
+.rev-fb h4{margin:12px 0 2px;font-size:13px;color:var(--green);border-top:1px solid var(--line);padding-top:10px}
+.rev-fb p{margin:0;white-space:pre-wrap;font-size:14px;color:var(--navy)}
+.rev-fb p.empty{color:var(--muted);font-style:italic}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.modal-actions .btn{flex:1;min-width:110px;text-align:center;justify-content:center;padding:12px}
 
 @media(max-width:640px){
-  .row{grid-template-columns:1fr}
-  .rate{justify-content:space-between}
-  .rate button{width:46px;height:46px}
+  body{font-size:16px}
+  .wrap{padding:12px}
+  .row{grid-template-columns:1fr;gap:8px}
+  .rate{justify-content:space-between;gap:4px}
+  .rate button{width:48px;height:48px;font-size:16px}
+  .grid2{grid-template-columns:1fr}
   .meta{grid-template-columns:1fr}
-  .sheet{padding:12px}
   .signs{grid-template-columns:1fr}
+  .card{padding:13px;border-radius:10px}
+  .result .rs-score{font-size:21px}
+  .rev-grid{grid-template-columns:1fr}
+  .bar h1{font-size:15px}
+  .list-head h2{font-size:18px}
 }
 
 @media print{
@@ -181,17 +233,34 @@ textarea{min-height:110px;resize:vertical}
 
   <div class="wrap hidden" id="vForm">
     <div class="sheet" id="sheet"></div>
-    <div class="actions">
-      <button class="btn" id="btnSave"><span class="l-en">Save</span><span class="l-dv">ސޭވް ކުރޭ</span><span class="l-ar">حفظ</span></button>
-      <button class="btn ghost" id="btnPdf">PDF</button>
-      <button class="btn ghost" id="btnDownload"><span class="l-en">Download</span><span class="l-dv">ޑައުންލޯޑު</span><span class="l-ar">تنزيل</span></button>
-      <button class="btn ghost" id="btnBack"><span class="l-en">Back to list</span><span class="l-dv">ލިސްޓަށް</span><span class="l-ar">القائمة</span></button>
-      <span id="status"></span><span class="sp"></span>
-      <button class="btn danger" id="btnDel"><span class="l-en">Delete</span><span class="l-dv">ފޮހެލާ</span><span class="l-ar">حذف</span></button>
+    <div class="formbar">
+      <div class="result" id="resultBar">
+        <div class="rs-l"><span class="rs-score" id="total">0 / 275</span><span class="rs-pct" id="pct"></span></div>
+        <span class="rs-rated num" id="rated"></span>
+        <span class="rs-level" id="level"></span>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnSave"><span class="l-en">Save</span><span class="l-dv">ސޭވް ކުރޭ</span><span class="l-ar">حفظ</span></button>
+        <button class="btn gold" id="btnReview"><span class="l-en">Review &amp; PDF</span><span class="l-dv">މުރާޖައާ އަދި PDF</span><span class="l-ar">مراجعة و PDF</span></button>
+        <button class="btn ghost" id="btnBack"><span class="l-en">Back</span><span class="l-dv">ލިސްޓަށް</span><span class="l-ar">القائمة</span></button>
+        <span id="status"></span><span class="sp"></span>
+        <button class="btn danger" id="btnDel"><span class="l-en">Delete</span><span class="l-dv">ފޮހެލާ</span><span class="l-ar">حذف</span></button>
+      </div>
     </div>
   </div>
 
   <div class="app-foot credit">Developed by Ahmed Ahsan — Lecturer, KQS</div>
+</div>
+
+<!-- Final review modal -->
+<div class="modal hidden" id="reviewModal">
+  <div class="box">
+    <div class="box-h">
+      <span><span class="l-en">Final Review</span><span class="l-dv">އެންމެ ފަހުގެ މުރާޖައާ</span><span class="l-ar">المراجعة النهائية</span></span>
+      <button class="x" id="revClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="box-b" id="revBody"></div>
+  </div>
 </div>
 
 <script>
@@ -284,7 +353,41 @@ const MSG = {
   noName:{en:"(no name)",dv:"(ނަން ނެތް)",ar:"(بدون اسم)"},
   domain:{en:"Only these emails are allowed: @",dv:"ހުއްދަ އޮތީ ހަމައެކަނި މި އީމެއިލްތަކަށް: @",ar:"يسمح فقط بهذا البريد: @"},
   assessed:{en:"Assessed / ވަޒަންކުރެވޭ",dv:"Assessed / ވަޒަންކުރެވޭ",ar:"قُيِّمت"},
-  nonAssessed:{en:"Non Assessed / ނުކުރެވޭ",dv:"Non Assessed / ނުކުރެވޭ",ar:"لم تُقيَّم"}
+  nonAssessed:{en:"Non Assessed / ނުކުރެވޭ",dv:"Non Assessed / ނުކުރެވޭ",ar:"لم تُقيَّم"},
+  /* v1.5 — performance levels */
+  excellent:{en:"Excellent",dv:"ވަރަށް މޮޅު",ar:"ممتاز"},
+  veryGood:{en:"Very Good",dv:"ވަރަށް ރަނގަޅު",ar:"جيد جداً"},
+  good:{en:"Good",dv:"ރަނގަޅު",ar:"جيد"},
+  satisfactory:{en:"Satisfactory",dv:"އެކަށީގެންވޭ",ar:"مقبول"},
+  needsImprovement:{en:"Needs Improvement",dv:"ރަނގަޅުކުރަންޖެހޭ",ar:"يحتاج إلى تحسين"},
+  /* v1.5 — sections / progress */
+  secInfo:{en:"Teacher & Lesson Information",dv:"މުދައްރިސް އަދި ފިލާވަޅުގެ މައުލޫމާތު",ar:"معلومات المعلم والدرس"},
+  secCriteria:{en:"Observation Criteria",dv:"އޮބްޒަވޭޝަން މިންގަނޑުތައް",ar:"معايير الملاحظة"},
+  secFeedback:{en:"Feedback & Comments",dv:"ފީޑްބެކް އަދި ކޮމެންޓް",ar:"الملاحظات والتعليقات"},
+  secSign:{en:"Signatures",dv:"ސޮއި",ar:"التوقيعات"},
+  pInfo:{en:"Info",dv:"މައުލޫމާތު",ar:"المعلومات"},
+  pCriteria:{en:"Criteria",dv:"މިންގަނޑުތައް",ar:"المعايير"},
+  pFeedback:{en:"Feedback",dv:"ފީޑްބެކް",ar:"الملاحظات"},
+  /* v1.5 — feedback fields */
+  strengths:{en:"Strengths",dv:"ވަރުގަދަ ކަންތައްތައް",ar:"نقاط القوة"},
+  improvements:{en:"Areas for Improvement",dv:"ރަނގަޅުކުރަންވީ ކަންތައްތައް",ar:"مجالات التحسين"},
+  obsComments:{en:"Observer's Comments",dv:"އޮބްޒާވަރުގެ ކޮމެންޓް",ar:"ملاحظات المُقيِّم"},
+  teacherComments:{en:"Teacher's Comments",dv:"މުދައްރިސްގެ ކޮމެންޓް",ar:"ملاحظات المعلم"},
+  /* v1.5 — result / review */
+  score:{en:"Score",dv:"ސްކޯ",ar:"الدرجة"},
+  overall:{en:"Overall Result",dv:"ޖުމްލަ ނަތީޖާ",ar:"النتيجة الإجمالية"},
+  performance:{en:"Performance",dv:"ފެންވަރު",ar:"المستوى"},
+  review:{en:"Review & PDF",dv:"މުރާޖައާ އަދި PDF",ar:"مراجعة و PDF"},
+  finalReview:{en:"Final Review",dv:"އެންމެ ފަހުގެ މުރާޖައާ",ar:"المراجعة النهائية"},
+  teacher:{en:"Teacher",dv:"މުދައްރިސް",ar:"المعلم"},
+  observer:{en:"Observer",dv:"އޮބްޒާވަރު",ar:"المُقيِّم"},
+  course:{en:"Course / Topic",dv:"ކޯސް / ސުރުޚީ",ar:"المقرر / الموضوع"},
+  edit:{en:"Edit",dv:"އެޑިޓް",ar:"تعديل"},
+  download:{en:"Download PDF",dv:"PDF ޑައުންލޯޑް",ar:"تنزيل PDF"},
+  share:{en:"Share",dv:"ޝެއަރ",ar:"مشاركة"},
+  print:{en:"Print",dv:"ޕްރިންޓް",ar:"طباعة"},
+  shareText:{en:"Lesson Observation Report",dv:"ލެސަން އޮބްޒަވޭޝަން ރިޕޯޓް",ar:"تقرير ملاحظة الدرس"},
+  shareErr:{en:"Sharing is not supported on this device. Use Download instead.",dv:"މި ޑިވައިސްގައި ޝެއަރ ނުކުރެވޭ. ޑައުންލޯޑް ބޭނުންކުރައްވާ.",ar:"المشاركة غير مدعومة على هذا الجهاز. استخدم التنزيل بدلاً من ذلك."}
 };
 let lang="dv";
 const m = k => MSG[k][lang];
@@ -293,7 +396,7 @@ const m = k => MSG[k][lang];
 const DEMO = true;   // forms are stored on this device only (localStorage)
 let auth, db, user=null, cur=null, dirty=false, listCache=[];
 const $ = id => document.getElementById(id);
-const FIELDS = ["topic","cls","obsNo","date","assessed","student","supervisor","comments","supDate"];
+const FIELDS = ["topic","cls","obsNo","date","assessed","student","supervisor","comments","supDate","strengths","improvements","teacherComments"];
 const SIGS = ["sup"];
 const store = DEMO ? {
   all(){ try{return JSON.parse(localStorage.getItem("tpobs_demo")||"[]")}catch(e){return[]} },
@@ -320,24 +423,51 @@ function setLang(l){
 }
 function show(v){ ["vLogin","vApp"].forEach(x=>$(x).classList.toggle("hidden",x!==v)) }
 function page(p){ $("vList").classList.toggle("hidden",p!=="list"); $("vForm").classList.toggle("hidden",p!=="form"); window.scrollTo(0,0) }
-function score(d){ const v=Object.values(d.r||{}); return {sum:v.reduce((a,b)=>a+b,0), max:v.length*5, n:v.length} }
-const scoreText = s => `${s.sum} / ${s.n===N||s.n===0?275:s.max}`;
+function score(d){
+  const v=Object.values(d.r||{}); const sum=v.reduce((a,b)=>a+b,0), n=v.length;
+  const max=(n===N||n===0)?N*5:n*5;              // full 275 when complete (or empty), else only rated items
+  const pct=max?Math.round(sum/max*1000)/10:0;   // one decimal place
+  return {sum,max,n,pct};
+}
+const scoreText = s => `${s.sum} / ${s.max}`;
+/* performance level from percentage (returns an MSG key, or "" when nothing rated) */
+function perfKey(pct,n){
+  if(!n) return "";
+  if(pct>=90) return "excellent";
+  if(pct>=80) return "veryGood";
+  if(pct>=70) return "good";
+  if(pct>=60) return "satisfactory";
+  return "needsImprovement";
+}
+/* trilingual spans for an MSG key */
+const lbl = k => k ? T(MSG[k].en,MSG[k].dv,MSG[k].ar) : "";
 
 function buildSheet(){
-  const fld=(id,en,dv,ar,extra="",cls="")=>`<div class="${cls}"><label>${T(en,dv,ar)}</label><input id="f_${id}" ${extra}></div>`;
-  let h=`<div class="print-only bism">بسم الله الرحمن الرحيم</div>
-  <div class="print-only org">${T("Kulliyya of Education","ކުއްލިއްޔާ އޮފް އެޑިއުކޭޝަން","كلية التربية","div")}</div>
+  const fld=(id,en,dv,ar,extra="",cls="")=>`<div class="field ${cls}"><label>${T(en,dv,ar)}</label><input id="f_${id}" ${extra}></div>`;
+  const ta=(id,key)=>`<div class="fb"><label>${lbl(key)}</label><textarea id="f_${id}"></textarea></div>`;
+  const legend=T("5 Excellent, 4 Very Good, 3 Good, 2 Satisfactory, 1 Needs Improvement","<span class='num'>5</span> އެންމެ ރަނގަޅު، <span class='num'>4</span> ވަރަށް ރަނގަޅު، <span class='num'>3</span> ރަނގަޅު، <span class='num'>2</span> އެކަށީގެންވޭ، <span class='num'>1</span> ރަނގަޅުކުރަންޖެހޭ","<span class='num'>5</span> ممتاز، <span class='num'>4</span> جيد جدا، <span class='num'>3</span> جيد، <span class='num'>2</span> مقبول، <span class='num'>1</span> يحتاج إلى تحسين");
+  let h=`
   <div class="sheet-title">${T("LESSON OBSERVATION FORM - KEY STAGE <span class='num'>1-5</span>","ލެސަން އޮބްސަވޭޝަން ފޯމް - ކީ ސްޓޭޖް <span class='num'>1-5</span>","قائمة إشراف وتقييم الدرس <span class='num'>(KS 1-5)</span>","div")}</div>
-  <div class="meta">
-    ${fld("topic","Topic:","ސުރުޚީ:","موضوع الدرس:","","full")}
-    ${fld("cls","Class:","ކްލާސް:","الفصل:")}
-    ${fld("obsNo","Observation No:","އޮބްޒަވޭޝަން ނަންބަރު:","رقم التقييم:",'inputmode="numeric"')}
-    ${fld("date","Date:","ތާރީޚް:","التاريخ:",'type="date"')}
-    <div><label>${T("Assessed / Non Assessed","ވަޒަންކުރެވޭ / ނުކުރެވޭ","قيمت / لم تقيم")}</label><select id="f_assessed"><option value="Assessed"></option><option value="Non Assessed"></option></select></div>
-    ${fld("student","Student Teacher's Name:","ދަސްކުރާ މުދައްރިސްގެ ނަން:","اسم الطالب / الطالبة:")}
-    ${fld("supervisor","Supervisor:","ސުޕަވައިޒަރު:","اسم المشرف:")}
-  </div>
-  <p class="legend">${T("5 Excellent, 4 Very Good, 3 Good, 2 Satisfactory, 1 Needs Improvement","<span class='num'>5</span> އެންމެ ރަނގަޅު، <span class='num'>4</span> ވަރަށް ރަނގަޅު، <span class='num'>3</span> ރަނގަޅު، <span class='num'>2</span> އެކަށީގެންވޭ، <span class='num'>1</span> ރަނގަޅުކުރަންޖެހޭ","<span class='num'>5</span> ممتاز، <span class='num'>4</span> جيد جدا، <span class='num'>3</span> جيد، <span class='num'>2</span> مقبول، <span class='num'>1</span> يحتاج إلى تحسين")}</p><div id="rows">`;
+
+  <div class="progress" id="progress"></div>
+
+  <section class="card" id="sec-info">
+    <h3 class="card-h">${lbl("secInfo")}</h3>
+    <div class="grid2">
+      ${fld("student","Teacher's Name:","މުދައްރިސްގެ ނަން:","اسم المعلم:","","full")}
+      ${fld("supervisor","Observer:","އޮބްޒާވަރު:","المُقيِّم:")}
+      ${fld("obsNo","Observation No:","އޮބްޒަވޭޝަން ނަންބަރު:","رقم التقييم:",'inputmode="numeric"')}
+      ${fld("topic","Course / Topic:","ކޯސް / ސުރުޚީ:","المقرر / الموضوع:","","full")}
+      ${fld("cls","Class:","ކްލާސް:","الفصل:")}
+      ${fld("date","Date:","ތާރީޚް:","التاريخ:",'type="date"')}
+      <div class="field"><label>${T("Assessed / Non Assessed","ވަޒަންކުރެވޭ / ނުކުރެވޭ","قيمت / لم تقيم")}</label><select id="f_assessed"><option value="Assessed"></option><option value="Non Assessed"></option></select></div>
+    </div>
+  </section>
+
+  <section class="card" id="sec-criteria">
+    <h3 class="card-h">${lbl("secCriteria")}</h3>
+    <p class="legend">${legend}</p>
+    <div id="rows">`;
   let i=0;
   DIMS.forEach(d=>{
     h+=`<div class="dim">${T(...d.t)}</div>`;
@@ -348,18 +478,28 @@ function buildSheet(){
     });
   });
   h+=`</div>
-  <div class="total"><span>${T("Total Marks:","ޖުމްލަ މާކްސް:","مجموع الدرجات:")}</span><b id="total">0 / 275</b></div>
-  <label>${T("Comments:","ކޮމެންޓް:","الملاحظة:")}</label>
-  <textarea id="f_comments"></textarea>
-  <div class="signs">
-    <div>${T("Supervisor:","ސުޕަވައިޒަރު:","اسم المشرف:")} <span id="p_sup"></span></div>
-    <div>${T("Sign:","ސޮއި:","التوقيع:")}<canvas class="sig" id="sig_sup" width="600" height="200"></canvas><button type="button" class="clr" data-c="sup">${T("Clear","ފޮހެލާ","مسح")}</button></div>
-    <div>${T("Date:","ތާރީޚް:","التاريخ:")}<input type="date" id="f_supDate"></div>
-    <div>${T("Student teacher:","ދަސްކުރާ މުދައްރިސް:","اسم الطالب:")} <span id="p_stu"></span></div>
-    <div>${T("Sign:","ސޮއި:","التوقيع:")}<div class="blank"></div></div>
-    <div>${T("Date:","ތާރީޚް:","التاريخ:")}</div>
-  </div>
-  <p class="foot">${T("* If any of the criteria is not assessed, please exclude from the total marks.","* އެސެސްކުރުމުގައި އެއްވެސް ބައެއް ނުހިމެނޭނަމަ އެބަޔަށްވާ މާކްސް ޖުމްލައިން އުނިކުރެއްވުން އެދެމެވެ.","* إذا لم يتم تقييم أي من المعايير، فيرجى الاستبعاد من إجمالي الدرجات.","div")}</p>`;
+  </section>
+
+  <section class="card" id="sec-feedback">
+    <h3 class="card-h">${lbl("secFeedback")}</h3>
+    ${ta("strengths","strengths")}
+    ${ta("improvements","improvements")}
+    ${ta("comments","obsComments")}
+    ${ta("teacherComments","teacherComments")}
+  </section>
+
+  <section class="card" id="sec-sign">
+    <h3 class="card-h">${lbl("secSign")}</h3>
+    <div class="signs">
+      <div>${T("Observer:","އޮބްޒާވަރު:","المُقيِّم:")} <span id="p_sup"></span></div>
+      <div>${T("Sign:","ސޮއި:","التوقيع:")}<canvas class="sig" id="sig_sup" width="600" height="200"></canvas><button type="button" class="clr" data-c="sup">${T("Clear","ފޮހެލާ","مسح")}</button></div>
+      <div>${T("Date:","ތާރީޚް:","التاريخ:")}<input type="date" id="f_supDate"></div>
+      <div>${T("Teacher:","މުދައްރިސް:","المعلم:")} <span id="p_stu"></span></div>
+      <div>${T("Sign:","ސޮއި:","التوقيع:")}<div class="blank"></div></div>
+      <div>${T("Date:","ތާރީޚް:","التاريخ:")}</div>
+    </div>
+    <p class="foot">${T("* If any of the criteria is not assessed, please exclude from the total marks.","* އެސެސްކުރުމުގައި އެއްވެސް ބައެއް ނުހިމެނޭނަމަ އެބަޔަށްވާ މާކްސް ޖުމްލައިން އުނިކުރެއްވުން އެދެމެވެ.","* إذا لم يتم تقييم أي من المعايير، فيرجى الاستبعاد من إجمالي الدرجات.","div")}</p>
+  </section>`;
   $("sheet").innerHTML=h;
   $("rows").addEventListener("click",e=>{
     const b=e.target.closest("button[data-v]"); if(!b) return;
@@ -374,8 +514,24 @@ function paint(){
     const v=cur.r[r.dataset.i];
     r.querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.v===v));
   });
-  $("total").textContent=scoreText(score(cur));
-  $("p_sup").textContent=$("f_supervisor").value; $("p_stu").textContent=$("f_student").value;
+  const s=score(cur);
+  $("total").textContent=scoreText(s);
+  $("pct").textContent = s.n ? s.pct+"%" : "";
+  const pk=perfKey(s.pct,s.n);
+  $("level").innerHTML=lbl(pk); $("level").style.display = pk ? "" : "none";
+  $("rated").textContent = s.n+" / "+N;
+  const sup=$("f_supervisor"), stu=$("f_student");
+  if(sup) $("p_sup").textContent=sup.value; if(stu) $("p_stu").textContent=stu.value;
+  updateProgress(s);
+}
+function updateProgress(s){
+  const infoDone = REQUIRED.every(f=>{ const el=$("f_"+f); return el && el.value.trim(); });
+  const fbDone = ["strengths","improvements","comments","teacherComments"].some(f=>{ const el=$("f_"+f); return el && el.value.trim(); });
+  const prog=$("progress"); if(!prog) return;
+  const chip=(key,done,extra="")=>`<span class="chip ${done?'done':''}">${done?'<span class="tick">✓</span>':''}${lbl(key)}${extra}</span>`;
+  prog.innerHTML = chip("pInfo",infoDone)
+    + chip("pCriteria", s.n===N, ` <span class="tick">${s.n}/${N}</span>`)
+    + chip("pFeedback", fbDone);
 }
 function touch(){ dirty=true; $("status").textContent=m("unsaved") }
 function openForm(d){
@@ -485,52 +641,197 @@ $("importFile").onchange=e=>{
 };
 $("btnSave").onclick=save;
 $("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))){ if(!(await save())) return; } dirty=false; loadList() };
-// PDF = open a crisp black-and-white preview in a new tab; Download = same page, then print to PDF.
-// Both use real (vector) text via the browser's own rendering, so nothing is blurry.
-$("btnPdf").onclick=()=>{ const w=window.open("","_blank"); openPdf(w,false); };
-$("btnDownload").onclick=()=>{ const w=window.open("","_blank"); openPdf(w,true); };
+/* ===== v1.5 — Final Review + professional PDF report ===== */
+const esc = t => (t||"").replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const one = (en,dv,ar) => lang==="en"?en:lang==="dv"?dv:ar;
+function syncFields(){ FIELDS.forEach(f=>{ const el=$("f_"+f); if(el) cur[f]=el.value.trim(); }); }
 
-function buildPdfDoc(){
-  // clone the live sheet and bake current values into the clone so the new document shows them
-  const live=$("sheet"), clone=live.cloneNode(true);
-  const L=s=>live.querySelectorAll(s), C=s=>clone.querySelectorAll(s);
-  L("input").forEach((el,i)=>C("input")[i].setAttribute("value",el.value));
-  L("textarea").forEach((el,i)=>{ C("textarea")[i].textContent=el.value });
-  L("select").forEach((el,i)=>{ const o=C("select")[i].querySelectorAll("option"); o.forEach(x=>x.removeAttribute("selected")); if(o[el.selectedIndex]) o[el.selectedIndex].setAttribute("selected","") });
-  L("canvas").forEach((el,i)=>{ const c=C("canvas")[i], img=document.createElement("img"); img.src=el.toDataURL("image/png"); img.className=c.className; c.replaceWith(img) });
-  // flatten the @media print rules so the print layout shows on screen too
-  const printCss=[...document.styleSheets].flatMap(s=>{try{return [...s.cssRules]}catch(e){return[]}})
-    .filter(r=>r.media&&r.media.mediaText==="print").flatMap(r=>[...r.cssRules]).filter(r=>r.selectorText).map(r=>r.cssText).join("\n");
-  const baseCss=document.querySelector("style").textContent;
-  const bw=`/* black & white */
-    *{color:#000!important;border-color:#000!important;box-shadow:none!important}
-    body,.sheet,.meta input,.meta select,textarea,.signs input,.rate button{background:#fff!important}
-    .dim{background:#000!important}
-    .dim,.dim *{color:#fff!important}
-    .rate button.on{background:#000!important;color:#fff!important}
-    input::-webkit-calendar-picker-indicator{display:none!important}
-    img{filter:grayscale(1) contrast(1.4)}
-    @media print{body{background:#fff!important}}`;
-  const dir=lang==="en"?"ltr":"rtl", name=`Observation ${cur.obsNo||""} - ${cur.student||""}`.trim();
-  return `<!DOCTYPE html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8">
-<base href="${document.baseURI}"><title>${name}</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<style>${baseCss}
-/* print layout, applied on screen */
-${printCss}
-${bw}
-body{background:#fff;margin:0;padding:14mm}</style></head>
-<body class="lang-${lang}">${clone.outerHTML}</body></html>`;
+$("btnReview").onclick=openReview;
+$("revClose").onclick=closeReview;
+$("reviewModal").onclick=e=>{ if(e.target.id==="reviewModal") closeReview(); };
+function closeReview(){ $("reviewModal").classList.add("hidden"); }
+
+function openReview(){
+  if(!cur) return;
+  syncFields();
+  const s=score(cur), pk=perfKey(s.pct,s.n);
+  const row=(k,v)=>`<div><span class="k">${k}</span>${esc(v)||"—"}</div>`;
+  const fb=(key,val)=>`<h4>${lbl(key)}</h4><p class="${val?'':'empty'}">${val?esc(val):"—"}</p>`;
+  $("revBody").innerHTML=`
+    <div class="rev-result">
+      <div class="big">${s.sum} / ${s.max}</div>
+      <div class="pc">${s.n?s.pct+"%":""}</div>
+      ${pk?`<div class="lvl">${lbl(pk)}</div>`:""}
+    </div>
+    <div class="rev-grid">
+      ${row(stripL(lbl("teacher")),cur.student)}
+      ${row(stripL(lbl("observer")),cur.supervisor)}
+      ${row(stripL(lbl("course")),cur.topic)}
+      ${row(one("Class","ކްލާސް","الفصل"),cur.cls)}
+      ${row(one("Date","ތާރީޚް","التاريخ"),cur.date)}
+      ${row(one("Observation No","ނަންބަރު","رقم"),cur.obsNo)}
+    </div>
+    <div class="rev-fb">
+      ${fb("strengths",cur.strengths)}
+      ${fb("improvements",cur.improvements)}
+      ${fb("obsComments",cur.comments)}
+      ${fb("teacherComments",cur.teacherComments)}
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="revEdit">${lbl("edit")}</button>
+      <button class="btn gold" id="revDownload">${lbl("download")}</button>
+      <button class="btn" id="revShare">${lbl("share")}</button>
+      <button class="btn ghost" id="revPrint">${lbl("print")}</button>
+    </div>`;
+  $("reviewModal").classList.remove("hidden");
+  $("revEdit").onclick=closeReview;
+  $("revDownload").onclick=()=>openReport(true);
+  $("revPrint").onclick=()=>openReport(true);
+  $("revShare").onclick=shareReport;
+}
+/* the rev-grid label just needs the active-language text, not all three spans */
+function stripL(spansHtml){ const d=document.createElement("div"); d.innerHTML=spansHtml;
+  const el=d.querySelector(".l-"+lang); return el?el.textContent:d.textContent; }
+
+function reportName(){
+  const today=new Date().toISOString().slice(0,10);
+  const safe=(cur.student||"Teacher").normalize("NFC").replace(/[\\/:*?"<>|]+/g,"").trim().replace(/\s+/g,"_").slice(0,40)||"Teacher";
+  return `Lesson_Observation_${safe}_${cur.date||today}`;
 }
 
-async function openPdf(w,doPrint){
-  if(!w){ alert(T("Please allow pop-ups to open the PDF.","PDF ހުޅުވުމަށް ޕޮޕް-އަޕް ހުއްދަކުރައްވާ.","يرجى السماح بالنوافذ المنبثقة لفتح PDF.","").replace(/<[^>]+>/g,"")); return }
-  FIELDS.forEach(f=>cur[f]=$("f_"+f).value.trim());
-  w.document.open(); w.document.write(buildPdfDoc()); w.document.close();
+function buildReportDoc(){
+  const s=score(cur), pk=perfKey(s.pct,s.n);
+  const pick=a=>one(a[0],a[1],a[2]);
+  const L=k=>MSG[k][lang];
+  let idx=0, summaryRows="", detail="";
+  DIMS.forEach(d=>{
+    let sub=0, rows="";
+    d.items.forEach(it=>{ const v=cur.r[idx]; if(v) sub+=v;
+      rows+=`<div class="crit"><span class="c-txt">${esc(pick(it))}</span><span class="c-sc">${v||"–"}</span></div>`; idx++; });
+    const dmax=d.items.length*5, dname=esc(pick(d.t));
+    summaryRows+=`<tr><td>${dname}</td><td class="n">${sub}</td><td class="n">${dmax}</td></tr>`;
+    detail+=`<h3 class="dim-h">${dname}</h3>${rows}`;
+  });
+  const dir=lang==="en"?"ltr":"rtl";
+  const fname=reportName();
+  const infoRow=(k,v)=>`<tr><td class="k">${esc(k)}</td><td>${esc(v)||"&nbsp;"}</td></tr>`;
+  const assessedTxt = cur.assessed==="Non Assessed" ? L("nonAssessed") : L("assessed");
+  const fbBlock=(label,val)=>`<h2 class="sec">${esc(label)}</h2><p class="fb-text ${val?'':'empty'}">${val?esc(val):"&nbsp;"}</p>`;
+  const sig = cur.sig_sup ? `<img src="${cur.sig_sup}" alt="">` : `<div class="sign-line"></div>`;
+  const uni=one("ISLAMIC UNIVERSITY OF THE MALDIVES","ދިވެހިރާއްޖޭގެ އިސްލާމީ ޔުނިވަރސިޓީ","الجامعة الإسلامية بالمالديف");
+  const kull=one("Kulliyya of Education","ކުއްލިއްޔާ އޮފް އެޑިއުކޭޝަން","كلية التربية");
+  const rtitle=one("LESSON OBSERVATION REPORT","ލެސަން އޮބްޒަވޭޝަން ރިޕޯޓް","تقرير ملاحظة الدرس");
+  const css=`@page{size:A4;margin:14mm}*{box-sizing:border-box}
+@font-face{font-family:"Faruma";src:url("fonts/Faruma.woff2") format("woff2"),url("fonts/Faruma.woff") format("woff");font-display:swap}
+html,body{margin:0}body{color:#16263f;font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body.lang-en{font-family:"Segoe UI",system-ui,Roboto,sans-serif;line-height:1.5}
+body.lang-dv{font-family:"Faruma",sans-serif;line-height:1.9}
+body.lang-ar{font-family:"Amiri",serif;line-height:1.8}
+.rb-score,.rb-pct,.c-sc,.dim-summary td.n{font-family:"Segoe UI",system-ui,sans-serif}
+.rpt{max-width:180mm;margin:0 auto}
+.rpt-head{text-align:center;border-bottom:3px solid #b98a1e;padding-bottom:10px;margin-bottom:14px}
+.bism{font-family:"Amiri",serif;font-size:13pt;color:#0a4034;margin-bottom:6px}
+.uni{font-size:15pt;font-weight:700;color:#0f5c4a}
+.kull{font-size:11pt;color:#5d6b66;margin:2px 0 8px}
+.rpt-title{font-size:12.5pt;font-weight:700;background:#0f5c4a;color:#fff;display:inline-block;padding:5px 20px;border-radius:4px}
+.info{width:100%;border-collapse:collapse;margin-bottom:14px}
+.info td{padding:6px 10px;border:1px solid #c9d3cf;font-size:10.5pt;vertical-align:top}
+.info td.k{background:#eaf4f0;color:#0a4034;font-weight:700;width:34%;white-space:nowrap}
+.result-box{border:2px solid #b98a1e;border-radius:8px;background:#0f5c4a;color:#fff;text-align:center;padding:14px 10px;margin:4px 0 6px;break-inside:avoid}
+.rb-label{font-size:9.5pt;letter-spacing:1px;opacity:.9;text-transform:uppercase}
+.rb-score{font-size:30pt;font-weight:700;line-height:1.1;direction:ltr;unicode-bidi:isolate}.rb-pct{font-size:14pt;direction:ltr;unicode-bidi:isolate}
+.rb-level{display:inline-block;background:#b98a1e;color:#1c1200;font-weight:700;padding:4px 20px;border-radius:20px;margin-top:8px;font-size:12pt}
+.sec{font-size:11.5pt;color:#fff;background:#0f5c4a;padding:5px 12px;border-radius:4px;margin:16px 0 8px;break-after:avoid}
+.dim-summary{width:100%;border-collapse:collapse;margin-bottom:6px}
+.dim-summary th,.dim-summary td{border:1px solid #c9d3cf;padding:6px 10px;font-size:10.5pt;text-align:start}
+.dim-summary th{background:#16263f;color:#fff}.dim-summary td.n{text-align:center;width:66px}
+.dim-summary tr.tot td{font-weight:700;background:#eaf4f0}
+.dim-h{font-size:11pt;font-weight:700;color:#0a4034;border-bottom:1.5px solid #b98a1e;margin:12px 0 4px;break-after:avoid}
+.crit{display:flex;justify-content:space-between;gap:12px;padding:3px 2px;border-bottom:1px dotted #c9d3cf;break-inside:avoid;font-size:10pt}
+.crit .c-sc{font-weight:700;color:#0f5c4a;min-width:26px;text-align:center}
+.fb-text{white-space:pre-wrap;border:1px solid #c9d3cf;border-radius:6px;padding:8px 10px;font-size:10.5pt;min-height:16px;margin:0;break-inside:avoid}
+.fb-text.empty{min-height:30px}
+.sign-row{display:flex;justify-content:space-between;gap:20px;margin-top:24px;break-inside:avoid}
+.sign-row>div{flex:1;font-size:10.5pt}
+.sign-line{border-bottom:1px solid #16263f;height:40px;margin-top:6px}
+.sign-row img{max-height:48px;max-width:100%;display:block;margin-top:4px}
+.sl-name{border-top:1px solid #c9d3cf;margin-top:4px;padding-top:3px;color:#5d6b66;font-size:9.5pt}
+.rpt-foot{margin-top:16px;font-size:8.5pt;color:#9aa;text-align:center;border-top:1px solid #c9d3cf;padding-top:6px;font-family:"Segoe UI",system-ui}`;
+  return `<!DOCTYPE html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8">
+<base href="${document.baseURI}"><title>${esc(fname)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>${css}</style></head>
+<body class="lang-${lang}">
+<div class="rpt">
+  <div class="rpt-head">
+    <div class="bism">بسم الله الرحمن الرحيم</div>
+    <div class="uni">${esc(uni)}</div>
+    <div class="kull">${esc(kull)}</div>
+    <div class="rpt-title">${esc(rtitle)}</div>
+  </div>
+  <table class="info">
+    ${infoRow(L("teacher"),cur.student)}
+    ${infoRow(L("observer"),cur.supervisor)}
+    ${infoRow(L("course"),cur.topic)}
+    ${infoRow(one("Class","ކްލާސް","الفصل"),cur.cls)}
+    ${infoRow(one("Observation No","އޮބްޒަވޭޝަން ނަންބަރު","رقم التقييم"),cur.obsNo)}
+    ${infoRow(one("Date","ތާރީޚް","التاريخ"),cur.date)}
+    ${infoRow(one("Assessed / Non Assessed","ވަޒަންކުރެވޭ / ނުކުރެވޭ","قيمت / لم تقيم"),assessedTxt)}
+  </table>
+  <div class="result-box">
+    <div class="rb-label">${esc(L("overall"))}</div>
+    <div class="rb-score">${s.sum} / ${s.max}</div>
+    <div class="rb-pct">${s.n?s.pct+"%":""}</div>
+    ${pk?`<div class="rb-level">${esc(L(pk))}</div>`:""}
+  </div>
+  <h2 class="sec">${esc(L("secCriteria"))}</h2>
+  <table class="dim-summary">
+    <tr><th>${one("Area","ބައި","المجال")}</th><th>${esc(L("score"))}</th><th>${one("Max","އެންމެ މަތި","الحد الأقصى")}</th></tr>
+    ${summaryRows}
+    <tr class="tot"><td>${one("Total","ޖުމްލަ","المجموع")}</td><td class="n">${s.sum}</td><td class="n">${N*5}</td></tr>
+  </table>
+  ${detail}
+  ${fbBlock(L("strengths"),cur.strengths)}
+  ${fbBlock(L("improvements"),cur.improvements)}
+  ${fbBlock(L("obsComments"),cur.comments)}
+  ${fbBlock(L("teacherComments"),cur.teacherComments)}
+  <div class="sign-row">
+    <div>${one("Observer Signature","އޮބްޒާވަރުގެ ސޮއި","توقيع المُقيِّم")}:${sig}<div class="sl-name">${esc(cur.supervisor)}</div></div>
+    <div>${one("Teacher Signature","މުދައްރިސްގެ ސޮއި","توقيع المعلم")}:<div class="sign-line"></div><div class="sl-name">${esc(cur.student)}</div></div>
+    <div>${one("Date","ތާރީޚް","التاريخ")}:<div class="sign-line"></div></div>
+  </div>
+  <div class="rpt-foot">${esc(fname)}</div>
+</div>
+</body></html>`;
+}
+
+function openReport(doPrint){
+  if(!cur) return null;
+  syncFields();
+  const w=window.open("","_blank");
+  if(!w){ alert(one("Please allow pop-ups to open the PDF.","PDF ހުޅުވުމަށް ޕޮޕް-އަޕް ހުއްދަކުރައްވާ.","يرجى السماح بالنوافذ المنبثقة لفتح PDF.")); return null; }
+  w.document.open(); w.document.write(buildReportDoc()); w.document.close();
   if(doPrint){
     const go=()=>{ try{ w.focus(); w.print() }catch(e){} };
-    const wait=async()=>{ try{ if(w.document.fonts&&w.document.fonts.ready) await w.document.fonts.ready }catch(e){} setTimeout(go,250) };
+    const wait=async()=>{ try{ if(w.document.fonts&&w.document.fonts.ready) await w.document.fonts.ready }catch(e){} setTimeout(go,350) };
     if(w.document.readyState==="complete") wait(); else w.onload=wait;
+  }
+  return w;
+}
+
+async function shareReport(){
+  syncFields();
+  const s=score(cur), pk=perfKey(s.pct,s.n);
+  const title=m("shareText");
+  const lvl = pk?MSG[pk][lang]:"";
+  const text=`${m("shareText")}\n${cur.student||""}\n${s.sum} / ${s.max}${s.n?" ("+s.pct+"%)":""}${lvl?" — "+lvl:""}`.trim();
+  const url=location.origin;
+  if(navigator.share){
+    try{ await navigator.share({title,text,url}); }catch(e){}
+  }else{
+    try{ await navigator.clipboard.writeText(text+"\n"+url);
+      alert(one("Summary copied to clipboard.","ޚުލާސާ ކޮޕީކުރެވިއްޖެ.","تم نسخ الملخص.")); }
+    catch(e){ alert(m("shareErr")); }
   }
 }
 $("btnDel").onclick=async()=>{ if(confirm(m("askDel"))){ await store.del(cur.id); dirty=false; loadList() } };
