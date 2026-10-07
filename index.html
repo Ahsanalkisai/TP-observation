@@ -260,6 +260,9 @@ const MSG = {
   askDel:{en:"Delete this form?",dv:"މި ފޯމް ފޮހެލަންތަ؟",ar:"حذف هذه الاستمارة؟"},
   loading:{en:"Loading...",dv:"ލޯޑް ވަނީ...",ar:"جارٍ التحميل..."},
   loadErr:{en:"Could not load: ",dv:"ލޯޑް ނުކުރެވުނު: ",ar:"تعذر التحميل: "},
+  savedMsg:{en:"Saved successfully.",dv:"ރަނގަޅަށް ސޭވްކުރެވިއްޖެ.",ar:"تم الحفظ بنجاح."},
+  incomplete:{en:"Please fill in all fields and rate every criterion before saving.",dv:"ސޭވްކުރުމުގެ ކުރިން ހުރިހާ ގޮޅިއެއް ފުރިހަމަކޮށް، ހުރިހާ ބަޔަކަށް މާކްސް ދެއްވާ.",ar:"يرجى ملء جميع الحقول وتقييم كل معيار قبل الحفظ."},
+  notRated:{en:"criteria not yet rated.",dv:"ބަޔަކަށް އަދި މާކްސް ނުދެވޭ.",ar:"معايير لم تُقيَّم بعد."},
   empty:{en:'No forms yet. Press "New form" to start.',dv:'އަދި ފޯމެއް ނެތް. "އާ ފޯމެއް" އަށް ފިތާލައްވާ.',ar:'لا توجد استمارات بعد. اضغط "استمارة جديدة".'},
   noName:{en:"(no name)",dv:"(ނަން ނެތް)",ar:"(بدون اسم)"},
   domain:{en:"Only these emails are allowed: @",dv:"ހުއްދަ އޮތީ ހަމައެކަނި މި އީމެއިލްތަކަށް: @",ar:"يسمح فقط بهذا البريد: @"},
@@ -366,12 +369,27 @@ function openForm(d){
   SIGS.forEach(sigLoad);
   dirty=false; $("status").textContent=""; paint(); page("form");
 }
+const REQUIRED=["topic","cls","obsNo","date","assessed","student","supervisor"];
+function firstMissing(){
+  for(const f of REQUIRED){ const el=$("f_"+f); if(!el.value.trim()) return el; }
+  for(let i=0;i<N;i++){ if(!(String(i) in (cur.r||{}))) return document.querySelector('.rate[data-i="'+i+'"]'); }
+  return null;
+}
 async function save(){
   FIELDS.forEach(f=>cur[f]=$("f_"+f).value.trim());
+  // block saving unless every field is filled and all criteria are rated
+  const miss=firstMissing();
+  if(miss){
+    miss.scrollIntoView({behavior:"smooth",block:"center"});
+    if(miss.tagName!=="DIV" && typeof miss.focus==="function") miss.focus();
+    const unrated=N-Object.keys(cur.r||{}).length;
+    alert(m("incomplete")+(unrated>0?"\n\n"+unrated+" "+m("notRated"):""));
+    return false;
+  }
   cur.updated=Date.now(); cur.email=user.email||""; cur.lang=lang;
   $("status").textContent=m("saving");
-  try{ await store.save(cur); dirty=false; $("status").textContent=m("saved"); return true }
-  catch(e){ $("status").textContent=m("failed")+e.message; return false }
+  try{ await store.save(cur); dirty=false; $("status").textContent=m("saved"); alert(m("savedMsg")); return true }
+  catch(e){ $("status").textContent=m("failed")+e.message; alert(m("failed")+e.message); return false }
 }
 function renderList(){
   const L=$("list"); L.innerHTML="";
@@ -418,7 +436,7 @@ document.querySelectorAll("#langBtns button").forEach(b=>b.onclick=()=>setLang(b
 $("langSel").onchange=e=>setLang(e.target.value);
 $("btnNew").onclick=()=>openForm(null);
 $("btnSave").onclick=save;
-$("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))) await save(); dirty=false; loadList() };
+$("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))){ if(!(await save())) return; } dirty=false; loadList() };
 // PDF = open a crisp black-and-white preview in a new tab; Download = same page, then print to PDF.
 // Both use real (vector) text via the browser's own rendering, so nothing is blurry.
 $("btnPdf").onclick=()=>{ const w=window.open("","_blank"); openPdf(w,false); };
@@ -459,7 +477,7 @@ body{background:#fff;margin:0;padding:14mm}</style></head>
 
 async function openPdf(w,doPrint){
   if(!w){ alert(T("Please allow pop-ups to open the PDF.","PDF ހުޅުވުމަށް ޕޮޕް-އަޕް ހުއްދަކުރައްވާ.","يرجى السماح بالنوافذ المنبثقة لفتح PDF.","").replace(/<[^>]+>/g,"")); return }
-  if(dirty) await save();
+  FIELDS.forEach(f=>cur[f]=$("f_"+f).value.trim());
   w.document.open(); w.document.write(buildPdfDoc()); w.document.close();
   if(doPrint){
     const go=()=>{ try{ w.focus(); w.print() }catch(e){} };
