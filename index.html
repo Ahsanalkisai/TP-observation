@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lesson Observation Form - Key Stage 1-5</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0f5c4a">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Observation">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet"><style>
 /* Faruma.ttf ފައިލް index.html އާ އެއް ފޯލްޑަރުގައި ބެހެއްޓުމުން ފޮންޓް ލޯޑުވާނެ */
 @font-face{font-family:"Faruma";src:local("Faruma"),url("fonts/Faruma.woff2") format("woff2"),url("fonts/Faruma.woff") format("woff");font-display:swap}
@@ -50,7 +57,8 @@ button{cursor:pointer}
 .login .credit{margin-top:20px}
 .app-foot{padding:16px 12px;margin-top:10px;border-top:1px solid var(--line)}
 
-.list-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px}
+.list-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px;gap:10px;flex-wrap:wrap}
+.list-actions{display:flex;gap:8px;flex-wrap:wrap}
 .list-head h2{margin:0;font-size:20px;font-weight:normal}
 .item{background:var(--paper);border:1px solid var(--line);border-inline-start:5px solid var(--green);border-radius:6px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer}
 .item .t{flex:1}
@@ -161,8 +169,13 @@ textarea{min-height:110px;resize:vertical}
   <div class="wrap" id="vList">
     <div class="list-head">
       <h2><span class="l-en">Saved observations</span><span class="l-dv">ސޭވްކުރި އޮބްޒަވޭޝަންތައް</span><span class="l-ar">الاستمارات المحفوظة</span></h2>
-      <button class="btn" id="btnNew"><span class="l-en">New form</span><span class="l-dv">އާ ފޯމެއް</span><span class="l-ar">استمارة جديدة</span></button>
+      <div class="list-actions">
+        <button class="btn ghost" id="btnExport" title="Backup"><span class="l-en">Backup</span><span class="l-dv">ބެކަޕް</span><span class="l-ar">نسخ احتياطي</span></button>
+        <button class="btn ghost" id="btnImport" title="Restore"><span class="l-en">Restore</span><span class="l-dv">ރީސްޓޯރ</span><span class="l-ar">استعادة</span></button>
+        <button class="btn" id="btnNew"><span class="l-en">New form</span><span class="l-dv">އާ ފޯމެއް</span><span class="l-ar">استمارة جديدة</span></button>
+      </div>
     </div>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
     <div id="list"></div>
   </div>
 
@@ -263,6 +276,10 @@ const MSG = {
   savedMsg:{en:"Saved successfully.",dv:"ރަނގަޅަށް ސޭވްކުރެވިއްޖެ.",ar:"تم الحفظ بنجاح."},
   incomplete:{en:"Please fill in all fields and rate every criterion before saving.",dv:"ސޭވްކުރުމުގެ ކުރިން ހުރިހާ ގޮޅިއެއް ފުރިހަމަކޮށް، ހުރިހާ ބަޔަކަށް މާކްސް ދެއްވާ.",ar:"يرجى ملء جميع الحقول وتقييم كل معيار قبل الحفظ."},
   notRated:{en:"criteria not yet rated.",dv:"ބަޔަކަށް އަދި މާކްސް ނުދެވޭ.",ar:"معايير لم تُقيَّم بعد."},
+  noBackup:{en:"No observations to back up yet.",dv:"ބެކަޕް ކުރާނެ އޮބްޒަވޭޝަނެއް އަދި ނެތް.",ar:"لا توجد استمارات للنسخ الاحتياطي بعد."},
+  restored:{en:"Restored observations: ",dv:"ރީސްޓޯރ ކުރެވުނު އޮބްޒަވޭޝަން: ",ar:"الاستمارات المستعادة: "},
+  restoreErr:{en:"Could not read that backup file.",dv:"އެ ބެކަޕް ފައިލް ކިޔަން ނުކުރެވުނު.",ar:"تعذر قراءة ملف النسخ الاحتياطي."},
+  restoreConfirm:{en:"Restore observations from this backup file? Existing forms are kept; newer versions win.",dv:"މި ބެކަޕް ފައިލުން އޮބްޒަވޭޝަންތައް ރީސްޓޯރ ކުރަންތަ؟ ހުރި ފޯމުތައް ބެހެއްޓޭނެ.",ar:"استعادة الاستمارات من هذا الملف؟ يتم الاحتفاظ بالنماذج الحالية."},
   empty:{en:'No forms yet. Press "New form" to start.',dv:'އަދި ފޯމެއް ނެތް. "އާ ފޯމެއް" އަށް ފިތާލައްވާ.',ar:'لا توجد استمارات بعد. اضغط "استمارة جديدة".'},
   noName:{en:"(no name)",dv:"(ނަން ނެތް)",ar:"(بدون اسم)"},
   domain:{en:"Only these emails are allowed: @",dv:"ހުއްދަ އޮތީ ހަމައެކަނި މި އީމެއިލްތަކަށް: @",ar:"يسمح فقط بهذا البريد: @"},
@@ -435,6 +452,37 @@ setLang(saved);
 document.querySelectorAll("#langBtns button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
 $("langSel").onchange=e=>setLang(e.target.value);
 $("btnNew").onclick=()=>openForm(null);
+
+/* Backup / Restore — single-user data safety (localStorage to/from a file) */
+const BK="tpobs_demo";
+function allObs(){ try{return JSON.parse(localStorage.getItem(BK)||"[]")}catch(e){return[]} }
+$("btnExport").onclick=()=>{
+  const data=allObs();
+  if(!data.length){ alert(m("noBackup")); return }
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download="tp-observations-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$("btnImport").onclick=()=>$("importFile").click();
+$("importFile").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  if(!confirm(m("restoreConfirm"))){ e.target.value=""; return }
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const incoming=JSON.parse(rd.result);
+      if(!Array.isArray(incoming)) throw 0;
+      const map={}; allObs().forEach(d=>{ if(d&&d.id) map[d.id]=d });
+      let n=0;
+      incoming.forEach(d=>{ if(d&&d.id && (!map[d.id]||(d.updated||0)>=(map[d.id].updated||0))){ map[d.id]=d; n++ } });
+      localStorage.setItem(BK,JSON.stringify(Object.values(map)));
+      loadList(); alert(m("restored")+n);
+    }catch(err){ alert(m("restoreErr")) }
+    e.target.value="";
+  };
+  rd.readAsText(f);
+};
 $("btnSave").onclick=save;
 $("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))){ if(!(await save())) return; } dirty=false; loadList() };
 // PDF = open a crisp black-and-white preview in a new tab; Download = same page, then print to PDF.
@@ -506,6 +554,9 @@ if(DEMO){
   };
   $("btnLogout").onclick=()=>auth.signOut();
 }
+
+/* PWA: register service worker for offline use */
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{})); }
 </script>
 <!-- Vercel Web Analytics (visitor counts, owner-only in the Vercel dashboard) -->
 <script defer src="/_vercel/insights/script.js"></script>
