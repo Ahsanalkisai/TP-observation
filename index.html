@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lesson Observation Form - Key Stage 1-5</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet"><style>
 /* Faruma.ttf ފައިލް index.html އާ އެއް ފޯލްޑަރުގައި ބެހެއްޓުމުން ފޮންޓް ލޯޑުވާނެ */
 @font-face{font-family:"Faruma";src:local("Faruma"),url("fonts/Faruma.woff2") format("woff2"),url("fonts/Faruma.woff") format("woff");font-display:swap}
 :root{--green:#0f5c4a;--green-d:#0a4034;--navy:#16263f;--paper:#fff;--bg:#eef2f0;--line:#c9d3cf;--muted:#5d6b66;--gold:#b98a1e;
@@ -415,29 +413,53 @@ $("langSel").onchange=e=>setLang(e.target.value);
 $("btnNew").onclick=()=>openForm(null);
 $("btnSave").onclick=save;
 $("btnBack").onclick=async()=>{ if(dirty && confirm(m("askSave"))) await save(); dirty=false; loadList() };
-$("btnPdf").onclick=()=>{ const w=window.open("about:blank","_blank"); makePdf("preview",w); };
-$("btnDownload").onclick=()=>makePdf("download",null);
-async function makePdf(mode,win){
-  if(dirty) await save();
-  const name=`Observation ${cur.obsNo||""} - ${cur.student||""}${lang==="ar"?" (AR)":""}`.trim();
-  if(typeof html2pdf==="undefined" || lang==="ar"){ if(win) win.close(); const o=document.title; document.title=name; window.print(); document.title=o; return }
-  // apply the print layout on screen, capture it, then restore
-  const css=[...document.styleSheets].flatMap(s=>{try{return [...s.cssRules]}catch(e){return[]}})
+// PDF = open a crisp black-and-white preview in a new tab; Download = same page, then print to PDF.
+// Both use real (vector) text via the browser's own rendering, so nothing is blurry.
+$("btnPdf").onclick=()=>{ const w=window.open("","_blank"); openPdf(w,false); };
+$("btnDownload").onclick=()=>{ const w=window.open("","_blank"); openPdf(w,true); };
+
+function buildPdfDoc(){
+  // clone the live sheet and bake current values into the clone so the new document shows them
+  const live=$("sheet"), clone=live.cloneNode(true);
+  const L=s=>live.querySelectorAll(s), C=s=>clone.querySelectorAll(s);
+  L("input").forEach((el,i)=>C("input")[i].setAttribute("value",el.value));
+  L("textarea").forEach((el,i)=>{ C("textarea")[i].textContent=el.value });
+  L("select").forEach((el,i)=>{ const o=C("select")[i].querySelectorAll("option"); o.forEach(x=>x.removeAttribute("selected")); if(o[el.selectedIndex]) o[el.selectedIndex].setAttribute("selected","") });
+  L("canvas").forEach((el,i)=>{ const c=C("canvas")[i], img=document.createElement("img"); img.src=el.toDataURL("image/png"); img.className=c.className; c.replaceWith(img) });
+  // flatten the @media print rules so the print layout shows on screen too
+  const printCss=[...document.styleSheets].flatMap(s=>{try{return [...s.cssRules]}catch(e){return[]}})
     .filter(r=>r.media&&r.media.mediaText==="print").flatMap(r=>[...r.cssRules]).filter(r=>r.selectorText).map(r=>r.cssText).join("\n");
-  const st=document.createElement("style"); st.textContent=css; document.head.append(st);
-  const sh=$("sheet"), oldW=sh.style.width; sh.style.width="700px";
-  const H=document.documentElement, oldDir=H.dir; sh.dir=oldDir; H.dir="ltr"; window.scrollTo(0,0);
-  $("status").textContent="PDF...";
-  try{
-    if(document.fonts&&document.fonts.ready) await document.fonts.ready;
-    const worker=html2pdf().set({margin:[10,8,10,8],filename:name+".pdf",image:{type:"jpeg",quality:.95},
-      html2canvas:{scale:2,scrollX:0,scrollY:0},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},
-      pagebreak:{mode:["css","legacy"],avoid:[".row",".dim",".total",".signs",".meta"]}}).from(sh);
-    if(mode==="download"){ await worker.save(); }
-    else{ const url=await worker.outputPdf("bloburl"); if(win) win.location.href=url; else window.open(url,"_blank"); }
-    $("status").textContent="";
-  }catch(e){ if(win) win.close(); $("status").textContent="PDF: "+e.message; window.print() }
-  finally{ st.remove(); sh.style.width=oldW; H.dir=oldDir; sh.removeAttribute("dir") }
+  const baseCss=document.querySelector("style").textContent;
+  const bw=`/* black & white */
+    *{color:#000!important;border-color:#000!important;box-shadow:none!important}
+    body,.sheet,.meta input,.meta select,textarea,.signs input,.rate button{background:#fff!important}
+    .dim{background:#000!important}
+    .dim,.dim *{color:#fff!important}
+    .rate button.on{background:#000!important;color:#fff!important}
+    input::-webkit-calendar-picker-indicator{display:none!important}
+    img{filter:grayscale(1) contrast(1.4)}
+    @media print{body{background:#fff!important}}`;
+  const dir=lang==="en"?"ltr":"rtl", name=`Observation ${cur.obsNo||""} - ${cur.student||""}`.trim();
+  return `<!DOCTYPE html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8">
+<base href="${document.baseURI}"><title>${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>${baseCss}
+/* print layout, applied on screen */
+${printCss}
+${bw}
+body{background:#fff;margin:0;padding:14mm}</style></head>
+<body class="lang-${lang}">${clone.outerHTML}</body></html>`;
+}
+
+async function openPdf(w,doPrint){
+  if(!w){ alert(T("Please allow pop-ups to open the PDF.","PDF ހުޅުވުމަށް ޕޮޕް-އަޕް ހުއްދަކުރައްވާ.","يرجى السماح بالنوافذ المنبثقة لفتح PDF.","").replace(/<[^>]+>/g,"")); return }
+  if(dirty) await save();
+  w.document.open(); w.document.write(buildPdfDoc()); w.document.close();
+  if(doPrint){
+    const go=()=>{ try{ w.focus(); w.print() }catch(e){} };
+    const wait=async()=>{ try{ if(w.document.fonts&&w.document.fonts.ready) await w.document.fonts.ready }catch(e){} setTimeout(go,250) };
+    if(w.document.readyState==="complete") wait(); else w.onload=wait;
+  }
 }
 $("btnDel").onclick=async()=>{ if(confirm(m("askDel"))){ await store.del(cur.id); dirty=false; loadList() } };
 window.addEventListener("beforeunload",e=>{ if(dirty){ e.preventDefault(); e.returnValue="" } });
