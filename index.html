@@ -224,27 +224,76 @@ body.lang-en .l-en,body.lang-dv .l-dv,body.lang-ar .l-ar{display:inline}
 }
 
 /* ===================== v1.6 refinements ===================== */
-/* Typography — larger, especially Dhivehi / Arabic */
-body.lang-dv{font-size:17px;line-height:1.95}
-body.lang-ar{font-size:17px;line-height:1.8}
+/* Typography — per-language type scale.
+   Thaana renders visually smaller than Latin at the same px, so Dhivehi gets the
+   largest sizes, Arabic ~1–2px over English. Text wraps naturally — never squeezed. */
+body.lang-dv{font-size:18px;line-height:2}
+body.lang-ar{font-size:17px;line-height:1.85}
 .wel-card h1{font-size:26px}
-body.lang-dv .wel-card h1,body.lang-ar .wel-card h1{font-size:24px}
+body.lang-dv .wel-card h1{font-size:27px}
 .wel-card .desc,.wel-card .sub{font-size:15px}
+body.lang-dv .wel-card .desc,body.lang-dv .wel-card .sub,body.lang-ar .wel-card .desc,body.lang-ar .wel-card .sub{font-size:16px}
 .lang-pill{font-size:17px}
+.lang-pill[data-l="dv"]{font-size:19px}
+.lang-pill[data-l="ar"]{font-size:18px}
+body.lang-dv .tb-title{font-size:19px}
+body.lang-ar .tb-title{font-size:18px}
+body.lang-dv .tb-title small,body.lang-ar .tb-title small{font-size:13px}
 .step-title h2{font-size:21px}
+body.lang-dv .step-title h2{font-size:23px}
+body.lang-ar .step-title h2{font-size:22px}
+body.lang-dv .step-title .st-count,body.lang-ar .step-title .st-count{font-size:13px}
 .field2 .flabel{font-size:13.5px}
+body.lang-dv .field2 .flabel{font-size:16px}
+body.lang-ar .field2 .flabel{font-size:15px}
 .field2 input,.field2 select{font-size:16.5px}
-body.lang-dv .field2 input,body.lang-ar .field2 input,body.lang-dv .field2 select,body.lang-ar .field2 select{font-size:17px}
+body.lang-dv .field2 input,body.lang-dv .field2 select{font-size:19px;line-height:1.8}
+body.lang-ar .field2 input,body.lang-ar .field2 select{font-size:18px}
+body.lang-dv .btn{font-size:18px}
+body.lang-ar .btn{font-size:17px}
 .crit .ct{font-size:15.5px;line-height:1.5}
-body.lang-dv .crit .ct,body.lang-ar .crit .ct{font-size:16.5px;line-height:1.9}
+body.lang-dv .crit .ct{font-size:18px;line-height:2}
+body.lang-ar .crit .ct{font-size:17px;line-height:1.9}
 .steps .lb{font-size:11.5px}
+body.lang-dv .steps .lb{font-size:14px}
+body.lang-ar .steps .lb{font-size:13.5px}
+.rate2 .rb .rlbl{font-size:11px}
+body.lang-dv .rate2 .rb .rlbl,body.lang-ar .rate2 .rb .rlbl{font-size:12.5px;line-height:1.3}
+.sum-row .sr-k{font-size:12px}
+body.lang-dv .sum-row .sr-k,body.lang-ar .sum-row .sr-k{font-size:14px}
 .sum-row .sr-v{font-size:16px}
-body.lang-dv .sum-row .sr-v,body.lang-ar .sum-row .sr-v{font-size:17px}
-.fb3 textarea{font-size:16px}
-body.lang-dv .fb3 textarea,body.lang-ar .fb3 textarea{font-size:17px}
+body.lang-dv .sum-row .sr-v{font-size:19px}
+body.lang-ar .sum-row .sr-v{font-size:18px}
 .fb3 .f3h{font-size:15px}
+body.lang-dv .fb3 .f3h{font-size:17px}
+body.lang-ar .fb3 .f3h{font-size:16px}
+.fb3 textarea{font-size:16px}
+body.lang-dv .fb3 textarea{font-size:18px;line-height:2}
+body.lang-ar .fb3 textarea{font-size:17.5px;line-height:1.9}
 .obs-card .oc-name{font-size:15.5px}
+body.lang-dv .obs-card .oc-name{font-size:18px}
+body.lang-ar .obs-card .oc-name{font-size:17px}
+body.lang-dv .obs-card .oc-sub,body.lang-ar .obs-card .oc-sub{font-size:14.5px;white-space:normal}
 .card-h,.acc-h .ah-t{font-size:15px}
+body.lang-dv .acc-h .ah-t{font-size:18px}
+body.lang-ar .acc-h .ah-t{font-size:17px}
+body.lang-dv .acc-h .ah-n,body.lang-ar .acc-h .ah-n{font-size:13px}
+body.lang-dv .hero p{font-size:17px}
+body.lang-ar .hero p{font-size:16px}
+body.lang-dv .sec-head .sh-l,body.lang-ar .sec-head .sh-l{font-size:14px;letter-spacing:0}
+body.lang-dv .badge,body.lang-ar .badge{font-size:13px}
+body.lang-dv .menu-pop button{font-size:18px}
+body.lang-ar .menu-pop button{font-size:17px}
+body.lang-dv .livebar .lb-level,body.lang-ar .livebar .lb-level{font-size:14px}
+body.lang-dv .result-main .rm-level,body.lang-ar .result-main .rm-level{font-size:14px}
+body.lang-dv .brk-row .bk-name,body.lang-ar .brk-row .bk-name{font-size:16px}
+body.lang-dv .empty,body.lang-ar .empty{font-size:16px}
+body.lang-dv .success h3{font-size:23px}
+body.lang-ar .success h3{font-size:22px}
+body.lang-dv .success p,body.lang-ar .success p{font-size:16px}
+body.lang-dv .ls-opt,body.lang-ar .ls-opt{font-size:18px}
+body.lang-dv .sheet h3.sh-title,body.lang-ar .sheet h3.sh-title{font-size:19px}
+body.lang-dv .foot-note,body.lang-ar .foot-note{font-family:inherit;direction:inherit;font-size:13.5px}
 
 /* Rating buttons with performance labels (ascending 1–5) */
 .rate2{display:flex;gap:6px;justify-content:space-between}
@@ -557,6 +606,9 @@ const ICONS={
   dots:'<circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>'
 };
 const icon=(n,cls="")=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
+/* Direction-aware navigation arrows: only these flip in RTL (never neutral icons) */
+const backIc=(cls="")=>icon(lang==="en"?"chevronL":"chevronR",cls);
+const nextIc=(cls="")=>icon(lang==="en"?"chevronR":"chevronL",cls);
 
 /* ============ 3. Storage ============ */
 let cur=null, dirty=false, listCache=[], step=0;
@@ -612,7 +664,7 @@ function renderWelcome(){
   $("welDesc").textContent=m("welcomeDesc");
   const names={en:"English",dv:"ދިވެހި",ar:"العربية"};
   $("langList").innerHTML=["en","dv","ar"].map(l=>
-    `<button class="lang-pill" data-l="${l}"><span class="lp-ic">${icon("globe")}</span><span class="lp-name">${names[l]}</span><span class="chev">${icon("chevronR","sm")}</span></button>`).join("");
+    `<button class="lang-pill" data-l="${l}"><span class="lp-ic">${icon("globe")}</span><span class="lp-name">${names[l]}</span><span class="chev">${nextIc("sm")}</span></button>`).join("");
   $("langList").querySelectorAll(".lang-pill").forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); goHome(); });
 }
 
@@ -620,7 +672,7 @@ function renderWelcome(){
 function goHome(){ screen("vHome"); loadList(); }
 async function loadList(){ try{ listCache=await store.list(); }catch(e){ listCache=[]; } renderHome(); }
 function renderHome(){
-  $("homeBack").innerHTML=icon("chevronL"); $("homeLang").innerHTML=icon("globe");
+  $("homeBack").innerHTML=backIc(); $("homeLang").innerHTML=icon("globe");
   $("homeTitle").innerHTML=`${m("homeTitle")}<small>${m("appSub")}</small>`;
   let h=`<div class="hero"><div class="hero-ic">${icon("clipboard")}</div><p>${m("heroDesc")}</p></div>
     <button class="btn primary lg block" id="btnNew">${icon("plus")} ${m("newObs")}</button>`;
@@ -687,7 +739,7 @@ function renderSteps(){
 function renderStep(){
   syncFromDom();           // keep any current inputs before re-render
   renderSteps();
-  $("formBack").innerHTML=icon("chevronL"); $("formLang").innerHTML=icon("globe");
+  $("formBack").innerHTML=backIc(); $("formLang").innerHTML=icon("globe");
   $("formTitle").textContent=m("homeTitle");
   const body=$("stepBody");
   if(step===0) body.innerHTML=renderTeacher();
@@ -720,7 +772,7 @@ function renderLesson(){
     + `<label class="field2" for="f_assessed"><span class="fic">${icon("checkCircle")}</span><span class="fbody">
         <span class="flabel">${m("fAssessed")}</span>
         <select id="f_assessed"><option value="Assessed"${a==="Assessed"?" selected":""}>${m("assessedVal")}</option><option value="Non Assessed"${a==="Non Assessed"?" selected":""}>${m("nonAssessedVal")}</option></select></span>
-        <span class="fic" style="background:transparent;color:var(--ink3)">${icon("chevronR","sm")}</span></label>`;
+        <span class="fic" style="background:transparent;color:var(--ink3)">${icon("chevronD","sm")}</span></label>`;
 }
 function renderCriteria(){
   let h=stepTitle("clipboard","hCriteria",Object.keys(cur.r||{}).length+" / "+N);
@@ -778,9 +830,9 @@ function renderBottom(){
     h+=`<div class="livebar"><div class="lb-l"><span class="lb-score">${s.sum}/${s.max}</span><span class="lb-pct">${s.n?s.pct+"%":""}</span><span class="lb-rated">${s.n}/${N}</span></div>${pk?`<span class="lb-level">${m(pk)}</span>`:""}</div>`;
   }
   if(step<4){
-    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${icon("chevronL")} ${m("back")}</button><button class="btn primary grow2" id="btnNext">${m("next")} ${icon("chevronR")}</button></div>`;
+    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${backIc()} ${m("back")}</button><button class="btn primary grow2" id="btnNext">${m("next")} ${nextIc()}</button></div>`;
   }else{
-    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${icon("chevronL")} ${m("edit")}</button><button class="btn accent grow2" id="btnGen">${icon("fileText")} ${m("generate")}</button></div>`;
+    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${backIc()} ${m("edit")}</button><button class="btn accent grow2" id="btnGen">${icon("fileText")} ${m("generate")}</button></div>`;
   }
   inner.innerHTML=h;
   $("btnPrev").onclick=()=>go(-1);
@@ -867,7 +919,7 @@ function openPreview(){
   if(!cur) return;
   $("successModal").classList.add("hidden");
   screen("vPreview");
-  $("pvBack").innerHTML=icon("chevronL"); $("pvDl").innerHTML=icon("download");
+  $("pvBack").innerHTML=backIc(); $("pvDl").innerHTML=icon("download");
   $("pvTitle").textContent=m("pdfPreview"); $("pvFitBtn").textContent=m("fit");
   $("pvDownload").innerHTML=`${icon("download")} ${m("download")}`;
   const frame=$("pvFrame");
