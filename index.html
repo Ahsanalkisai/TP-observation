@@ -116,10 +116,16 @@ button{cursor:pointer;border:0;background:none}
 /* ---------- step indicator ---------- */
 .steps{display:flex;align-items:flex-start;position:relative;padding:14px 6px 10px;max-width:560px;margin:0 auto;width:100%}
 .steps:before{content:"";position:absolute;top:28px;inset-inline:16%;height:2px;background:var(--line);z-index:0}
-.steps .st{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1}
-.steps .dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--ink3)}
+.steps .st{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;padding:4px 2px 6px;min-height:48px;border-radius:12px;touch-action:manipulation;transition:background .12s}
+.steps .dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--ink3);transition:transform .1s,background .12s,border-color .12s}
 .steps .st.active .dot{background:var(--ink);border-color:var(--ink);color:#fff}
 .steps .st.done .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+.steps .st:not(:disabled):hover .dot{border-color:var(--ink2)}
+.steps .st:not(:disabled):active{background:var(--line2)}
+.steps .st:not(:disabled):active .dot{transform:scale(.88)}
+.steps .st:disabled{cursor:default}
+.steps .st:disabled .dot{opacity:.55}
+.steps .st:disabled .lb{opacity:.6}
 .steps .lb{font-size:10px;color:var(--ink3);text-align:center;line-height:1.1}
 .steps .st.active .lb{color:var(--ink);font-weight:700}
 .steps .st.done .lb{color:var(--accent-ink)}
@@ -611,7 +617,7 @@ const backIc=(cls="")=>icon(lang==="en"?"chevronL":"chevronR",cls);
 const nextIc=(cls="")=>icon(lang==="en"?"chevronR":"chevronL",cls);
 
 /* ============ 3. Storage ============ */
-let cur=null, dirty=false, listCache=[], step=0;
+let cur=null, dirty=false, listCache=[], step=0, maxStep=0;
 const BK="tpobs_demo";
 const store = {
   all(){ try{return JSON.parse(localStorage.getItem(BK)||"[]")}catch(e){return[]} },
@@ -720,7 +726,7 @@ const STEPS=[
 function openForm(d){
   cur = d ? JSON.parse(JSON.stringify(d)) : {id:Date.now().toString(36)+Math.random().toString(36).slice(2,7), r:{}, assessed:"Assessed", date:new Date().toISOString().slice(0,10), status:"draft"};
   cur.r=cur.r||{};
-  step=0; dirty=false; screen("vForm"); renderStep();
+  step=0; maxStep=(d&&d.status==="complete")?4:0; dirty=false; screen("vForm"); renderStep();
 }
 function stepDone(i){
   if(i===0) return ["student","supervisor","obsNo"].every(f=>(cur[f]||"").trim());
@@ -729,15 +735,29 @@ function stepDone(i){
   if(i===3) return ["strengths","improvements","comments","teacherComments"].some(f=>(cur[f]||"").trim());
   return false;
 }
+/* a step is reachable if it was already visited, or every required step
+   before it is complete (feedback, step 3, is optional — same as final validation) */
+function canGo(i){
+  if(i<=step || i<=maxStep) return true;
+  for(let j=0;j<i;j++){ if(j!==3 && !stepDone(j)) return false; }
+  return true;
+}
+function goToStep(i){
+  if(i===step || !canGo(i)) return;
+  syncFromDom(); saveDraft();        // never lose entered data; no validation on jumps
+  step=i; renderStep();
+}
 function renderSteps(){
   $("steps").innerHTML=STEPS.map((s,i)=>{
     const cls=i===step?"active":(i<step||stepDone(i))?"done":"";
     const inner=(cls==="done"&&i!==step)?icon("check","sm"):(i+1);
-    return `<div class="st ${cls}"><div class="dot">${inner}</div><div class="lb">${m(s.key)}</div></div>`;
+    const unlocked=canGo(i);
+    return `<button type="button" class="st ${cls}" data-i="${i}" aria-label="${i+1}. ${m(s.key)}"${i===step?' aria-current="step"':''}${unlocked?"":' disabled aria-disabled="true"'}><span class="dot">${inner}</span><span class="lb">${m(s.key)}</span></button>`;
   }).join("");
 }
 function renderStep(){
   syncFromDom();           // keep any current inputs before re-render
+  if(step>maxStep) maxStep=step;
   renderSteps();
   $("formBack").innerHTML=backIc(); $("formLang").innerHTML=icon("globe");
   $("formTitle").textContent=m("homeTitle");
@@ -842,7 +862,7 @@ function renderBottom(){
 function bindStep(){
   // inputs sync + live updates
   $("stepBody").querySelectorAll("input,select,textarea").forEach(el=>{
-    el.addEventListener("input",()=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim(); });
+    el.addEventListener("input",()=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim(); renderSteps(); });
   });
   if(step===2){
     $("stepBody").querySelectorAll(".acc-h").forEach(hh=>hh.onclick=()=>hh.parentElement.classList.toggle("open"));
@@ -851,7 +871,7 @@ function bindStep(){
         const i=r.dataset.i, v=+btn.dataset.v;
         if(cur.r[i]===v) delete cur.r[i]; else cur.r[i]=v;
         r.querySelectorAll(".rb").forEach(x=>x.classList.toggle("on",+x.dataset.v===cur.r[i]));
-        updateCriteriaCounts(); renderBottom();
+        updateCriteriaCounts(); renderBottom(); renderSteps();
       });
     });
   }
@@ -1257,6 +1277,7 @@ async function shareReport(){
 $("formBack").onclick=()=>go(-1);
 $("formLang").onclick=openLangSheet;
 pvInit();
+$("steps").addEventListener("click",e=>{ const b=e.target.closest(".st"); if(b&&!b.disabled) goToStep(+b.dataset.i); });
 let saved="en"; try{ saved=localStorage.getItem("tpobs_lang")||"en" }catch(e){}
 setLang(saved);
 screen("vWelcome");
