@@ -3,7 +3,7 @@
    - Navigations are network-first (so updates show when online), cache fallback offline.
    - Other same-origin GETs are cache-first with background refresh.
    Bump CACHE when files change to retire old caches. */
-const CACHE = "tpobs-v7";
+const CACHE = "tpobs-v8";
 const SHELL = [
   "/",
   "/index.html",

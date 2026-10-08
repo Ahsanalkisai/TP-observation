@@ -349,6 +349,37 @@ body.lang-dv .foot-note,body.lang-ar .foot-note{font-family:inherit;direction:in
 .pv-ctrls .pv-fit{width:auto;padding:0 14px;font-size:14px;font-weight:600}
 .ic.spin{animation:tpspin .9s linear infinite}
 @keyframes tpspin{to{transform:rotate(360deg)}}
+
+/* ===== validation modal ===== */
+.vm-warn{width:64px;height:64px;border-radius:50%;background:var(--gold-soft);color:var(--gold-ink);display:grid;place-items:center;margin:2px auto 14px}
+.vm-warn .ic{width:30px;height:30px}
+.vm-title{font-size:20px;font-weight:800;text-align:center;margin:0 0 6px}
+.vm-sub{color:var(--ink2);font-size:14.5px;text-align:center;margin:0 0 16px}
+.vm-list{max-height:46vh;overflow:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;padding:2px}
+.vm-item{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:start}
+.vm-item:active{background:var(--line2)}
+.vm-ic{width:36px;height:36px;border-radius:10px;background:var(--gold-soft);color:var(--gold-ink);display:grid;place-items:center;flex:none}
+.vm-body{flex:1;min-width:0}
+.vm-t{display:block;font-weight:700;font-size:15px}
+.vm-d{display:block;color:var(--ink2);font-size:13px;margin-top:1px;line-height:1.45}
+.vm-chips{display:flex;flex-direction:column;gap:6px;margin:0 4px}
+.vm-crit{display:block;width:100%;text-align:start;background:#fff;border:1px dashed var(--line);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--ink);line-height:1.5}
+.vm-crit:active{background:var(--line2)}
+.vm-crit .num{font-weight:700;color:var(--accent-ink)}
+.vm-more{font-size:12.5px;color:var(--ink3);padding:2px 12px}
+.vm-actions .btn{width:100%;margin-bottom:10px}
+body.lang-dv .vm-title{font-size:21px}
+body.lang-dv .vm-sub,body.lang-ar .vm-sub{font-size:15.5px}
+body.lang-dv .vm-t,body.lang-ar .vm-t{font-size:16.5px}
+body.lang-dv .vm-d,body.lang-ar .vm-d{font-size:14.5px}
+body.lang-dv .vm-crit,body.lang-ar .vm-crit{font-size:14.5px}
+/* inline "missing" highlights — subtle, removed automatically once fixed */
+.field2.miss{border-color:#fca5a5;box-shadow:0 0 0 3px #fee2e2}
+.crit.miss{background:#fff7f7;border-inline-start:3px solid #f87171;padding-inline-start:11px}
+.acc .crit.miss{border-radius:10px}
+.miss-note{display:flex;align-items:center;gap:6px;color:#b91c1c;font-size:13px;font-weight:600;margin-top:8px}
+.miss-note .ic{width:15px;height:15px;flex:none}
+body.lang-dv .miss-note,body.lang-ar .miss-note{font-size:14.5px}
 </style>
 </head>
 <body class="lang-en">
@@ -412,6 +443,7 @@ body.lang-dv .foot-note,body.lang-ar .foot-note{font-family:inherit;direction:in
 </div>
 
 <!-- ========== OVERLAYS ========== -->
+<div id="valModal" class="overlay hidden"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="vmTitle" id="valBody"></div></div>
 <div id="successModal" class="overlay hidden"><div class="sheet success" id="successBody"></div></div>
 <div id="langSheet" class="overlay hidden"><div class="sheet lang-sheet" id="langSheetBody"></div></div>
 
@@ -482,6 +514,7 @@ const DIMS = [
  ]}
 ];
 const N = DIMS.reduce((a,d)=>a+d.items.length,0);   // 55 → 275
+const FLAT = DIMS.flatMap(d=>d.items);              // flat criterion list (index ↔ rating key)
 
 /* three-language text helper (kept for compatibility) */
 const T = (en,dv,ar,tag="span") => `<${tag} class="l-en">${en}</${tag}><${tag} class="l-dv">${dv}</${tag}><${tag} class="l-ar">${ar}</${tag}>`;
@@ -571,7 +604,18 @@ const MSG = {
   viewPdf:{en:"View PDF",dv:"PDF ބަލާ",ar:"عرض PDF"},
   pdfPreview:{en:"PDF Preview",dv:"PDF ޕްރިވިއު",ar:"معاينة PDF"},
   fit:{en:"Fit",dv:"ފިޓް",ar:"ملاءمة"},
-  savedCount:{en:"Saved Observations",dv:"ސޭވްކުރި އޮބްޒަވޭޝަންތައް",ar:"الملاحظات المحفوظة"}
+  savedCount:{en:"Saved Observations",dv:"ސޭވްކުރި އޮބްޒަވޭޝަންތައް",ar:"الملاحظات المحفوظة"},
+  /* validation modal */
+  vTitleOne:{en:"Complete your evaluation",dv:"އިވެލުއޭޝަން ފުރިހަމަކުރައްވާ",ar:"أكمل التقييم"},
+  vTitleMany:{en:"A few items need your attention",dv:"ބައެއް ތަންތަން ފުރިހަމަކުރަން އެބަހުރި",ar:"بعض العناصر تحتاج إلى استكمال"},
+  vIntro:{en:"Please complete the following before generating the PDF:",dv:"PDF ހެއްދެވުމުގެ ކުރިން މި ތަންތަން ފުރިހަމަކުރައްވާ:",ar:"يرجى إكمال ما يلي قبل إنشاء ملف PDF:"},
+  vMissing:{en:"Missing",dv:"ފުރިހަމަނުވޭ",ar:"الناقص"},
+  vCritOne:{en:"1 criterion still needs a rating",dv:"1 ބަޔަށް އަދި މާކްސް ދޭންޖެހޭ",ar:"معيار واحد ما زال بحاجة إلى تقييم"},
+  vCritMany:{en:"criteria still need ratings",dv:"ބަޔަށް އަދި މާކްސް ދޭންޖެހޭ",ar:"معايير ما زالت بحاجة إلى تقييم"},
+  vReview:{en:"Review missing items",dv:"މަދު ތަންތަން ބައްލަވާ",ar:"مراجعة العناصر الناقصة"},
+  vClose:{en:"Close",dv:"ބަންދުކުރޭ",ar:"إغلاق"},
+  vSelectRating:{en:"Please select a rating.",dv:"މާކްސްއެއް ހިޔާރުކުރައްވާ.",ar:"يرجى اختيار تقييم."},
+  vMore:{en:"more",dv:"އިތުރު",ar:"أخرى"}
 };
 let lang="en";
 const m = k => (MSG[k]?MSG[k][lang]:k);
@@ -613,7 +657,8 @@ const ICONS={
   chevronD:'<polyline points="6 9 12 15 18 9"/>',
   eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
   dots:'<circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>',
-  loader:'<path d="M21 12a9 9 0 1 1-6.22-8.56"/>'
+  loader:'<path d="M21 12a9 9 0 1 1-6.22-8.56"/>',
+  warn:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'
 };
 const icon=(n,cls="")=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
 /* Direction-aware navigation arrows: only these flip in RTL (never neutral icons) */
@@ -866,7 +911,9 @@ function renderBottom(){
 function bindStep(){
   // inputs sync + live updates
   $("stepBody").querySelectorAll("input,select,textarea").forEach(el=>{
-    el.addEventListener("input",()=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim(); renderSteps(); });
+    el.addEventListener("input",()=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim();
+      if(el.value.trim()){ const c=el.closest(".field2"); c&&c.classList.remove("miss"); }
+      renderSteps(); });
   });
   if(step===2){
     $("stepBody").querySelectorAll(".acc-h").forEach(hh=>hh.onclick=()=>hh.parentElement.classList.toggle("open"));
@@ -875,6 +922,7 @@ function bindStep(){
         const i=r.dataset.i, v=+btn.dataset.v;
         if(cur.r[i]===v) delete cur.r[i]; else cur.r[i]=v;
         r.querySelectorAll(".rb").forEach(x=>x.classList.toggle("on",+x.dataset.v===cur.r[i]));
+        if(cur.r[i]!=null){ const cc=r.closest(".crit"); if(cc){ cc.classList.remove("miss"); const nn=cc.querySelector(".miss-note"); nn&&nn.remove(); } }
         updateCriteriaCounts(); renderBottom(); renderSteps();
       });
     });
@@ -909,16 +957,91 @@ function firstMissingStep(){
 }
 
 /* ============ 8. Generate PDF ============ */
+/* ===== validation: find exactly what is missing, then explain it ===== */
+const FIELD_LBL={student:"fTeacher",supervisor:"fObserver",obsNo:"fObsNo",topic:"fCourse",cls:"fClass",date:"fDate"};
+const trunc=(s,n)=>s.length>n?s.slice(0,n-1)+"…":s;
+function collectMissing(){
+  const out=[];
+  const t=["student","supervisor","obsNo"].filter(f=>!(cur[f]||"").trim());
+  if(t.length) out.push({step:0,icon:"user",title:m("hTeacher"),fields:t});
+  const l=["topic","cls","date"].filter(f=>!(cur[f]||"").trim());
+  if(l.length) out.push({step:1,icon:"calendar",title:m("hLesson"),fields:l});
+  const crits=[]; for(let i=0;i<N;i++) if(!(String(i) in (cur.r||{}))) crits.push(i);
+  if(crits.length) out.push({step:2,icon:"clipboard",title:m("hCriteria"),crits});
+  return out;
+}
+let valReturnFocus=null;
+function valEsc(e){ if(e.key==="Escape") closeValidation(); }
+function closeValidation(){
+  $("valModal").classList.add("hidden");
+  document.removeEventListener("keydown",valEsc);
+  if(valReturnFocus&&valReturnFocus.focus){ try{valReturnFocus.focus()}catch(e){} }
+  valReturnFocus=null;
+}
+function openValidation(sections){
+  const onlyCrit=sections.length===1&&sections[0].crits;
+  const sep=one(", ","، ","، ");
+  let items="";
+  sections.forEach(s=>{
+    if(s.crits){
+      const n=s.crits.length;
+      const detail = n===1 ? m("vCritOne") : `<span class="num">${n}</span> ${m("vCritMany")}`;
+      const chips = s.crits.slice(0,4).map(i=>`<button type="button" class="vm-crit" data-ci="${i}"><span class="num">#${i+1}</span> — ${esc(trunc(one(FLAT[i][0],FLAT[i][1],FLAT[i][2]),52))}</button>`).join("");
+      const more = n>4 ? `<div class="vm-more">+<span class="num">${n-4}</span> ${m("vMore")}</div>` : "";
+      items+=`<div><button type="button" class="vm-item" data-ci="${s.crits[0]}"><span class="vm-ic">${icon(s.icon,"sm")}</span><span class="vm-body"><span class="vm-t">${s.title}</span><span class="vm-d">${detail}</span></span>${nextIc("sm")}</button><div class="vm-chips">${chips}${more}</div></div>`;
+    }else{
+      const names=s.fields.map(f=>m(FIELD_LBL[f])).join(sep);
+      items+=`<button type="button" class="vm-item" data-step="${s.step}" data-first="f_${s.fields[0]}"><span class="vm-ic">${icon(s.icon,"sm")}</span><span class="vm-body"><span class="vm-t">${s.title}</span><span class="vm-d">${m("vMissing")}: ${esc(names)}</span></span>${nextIc("sm")}</button>`;
+    }
+  });
+  $("valBody").innerHTML=`<div class="grab"></div>
+    <div class="vm-warn">${icon("warn")}</div>
+    <h3 class="vm-title" id="vmTitle">${onlyCrit?m("vTitleOne"):m("vTitleMany")}</h3>
+    <p class="vm-sub">${m("vIntro")}</p>
+    <div class="vm-list">${items}</div>
+    <div class="vm-actions">
+      <button class="btn primary lg" id="vmReview">${m("vReview")} ${nextIc()}</button>
+      <button class="btn" id="vmClose">${m("vClose")}</button>
+    </div>`;
+  valReturnFocus=document.activeElement;
+  $("valModal").classList.remove("hidden");
+  document.addEventListener("keydown",valEsc);
+  $("valModal").onclick=e=>{ if(e.target.id==="valModal") closeValidation(); };
+  $("vmClose").onclick=closeValidation;
+  $("vmReview").onclick=()=>{ const s=sections[0]; s.crits?gotoMissingCrit(s.crits[0]):gotoMissingField(s.step,"f_"+s.fields[0]); };
+  $("valBody").querySelectorAll(".vm-item[data-step]").forEach(b=>b.onclick=()=>gotoMissingField(+b.dataset.step,b.dataset.first));
+  $("valBody").querySelectorAll("[data-ci]").forEach(b=>b.onclick=()=>gotoMissingCrit(+b.dataset.ci));
+  setTimeout(()=>{ const r=$("vmReview"); r&&r.focus(); },60);
+}
+function gotoMissingField(stepIdx,fieldId){
+  closeValidation();
+  if(step!==stepIdx) goToStep(stepIdx);
+  setTimeout(()=>{
+    const el=$(fieldId); if(!el) return;
+    const card=el.closest(".field2"); if(card) card.classList.add("miss");
+    el.scrollIntoView({behavior:"smooth",block:"center"});
+    el.focus&&el.focus();
+  },90);
+}
+function gotoMissingCrit(ci){
+  closeValidation();
+  if(step!==2) goToStep(2);
+  setTimeout(()=>{
+    const r=document.querySelector(`.rate2[data-i="${ci}"]`); if(!r) return;
+    const crit=r.closest(".crit"), acc=crit&&crit.closest(".acc");
+    if(acc) acc.classList.add("open");
+    if(crit){
+      crit.classList.add("miss");
+      if(!crit.querySelector(".miss-note")){ const nt=document.createElement("div"); nt.className="miss-note"; nt.innerHTML=`${icon("warn","sm")} ${m("vSelectRating")}`; crit.appendChild(nt); }
+      crit.scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    const b=r.querySelector(".rb"); b&&b.focus();
+  },90);
+}
 function generatePDF(){
   syncFromDom();
-  const miss=firstMissingStep();
-  if(miss){
-    const unrated=N-Object.keys(cur.r||{}).length;
-    alert(m("incomplete")+(miss.step===2&&unrated>0?"\n\n"+unrated+" "+m("notRated"):""));
-    step=miss.step; renderStep();
-    if(miss.id) setTimeout(()=>{ const el=$(miss.id); if(el){ el.scrollIntoView({behavior:"smooth",block:"center"}); el.focus&&el.focus(); } },60);
-    return;
-  }
+  const sections=collectMissing();
+  if(sections.length){ openValidation(sections); return; }
   cur.updated=Date.now(); cur.lang=lang; cur.status="complete";
   try{ store.save(cur); }catch(e){}
   showSuccess();
