@@ -222,6 +222,76 @@ body.lang-en .l-en,body.lang-dv .l-dv,body.lang-ar .l-ar{display:inline}
   .welcome{padding:40px}
   .hero{border-radius:24px}
 }
+
+/* ===================== v1.6 refinements ===================== */
+/* Typography — larger, especially Dhivehi / Arabic */
+body.lang-dv{font-size:17px;line-height:1.95}
+body.lang-ar{font-size:17px;line-height:1.8}
+.wel-card h1{font-size:26px}
+body.lang-dv .wel-card h1,body.lang-ar .wel-card h1{font-size:24px}
+.wel-card .desc,.wel-card .sub{font-size:15px}
+.lang-pill{font-size:17px}
+.step-title h2{font-size:21px}
+.field2 .flabel{font-size:13.5px}
+.field2 input,.field2 select{font-size:16.5px}
+body.lang-dv .field2 input,body.lang-ar .field2 input,body.lang-dv .field2 select,body.lang-ar .field2 select{font-size:17px}
+.crit .ct{font-size:15.5px;line-height:1.5}
+body.lang-dv .crit .ct,body.lang-ar .crit .ct{font-size:16.5px;line-height:1.9}
+.steps .lb{font-size:11.5px}
+.sum-row .sr-v{font-size:16px}
+body.lang-dv .sum-row .sr-v,body.lang-ar .sum-row .sr-v{font-size:17px}
+.fb3 textarea{font-size:16px}
+body.lang-dv .fb3 textarea,body.lang-ar .fb3 textarea{font-size:17px}
+.fb3 .f3h{font-size:15px}
+.obs-card .oc-name{font-size:15.5px}
+.card-h,.acc-h .ah-t{font-size:15px}
+
+/* Rating buttons with performance labels (ascending 1–5) */
+.rate2{display:flex;gap:6px;justify-content:space-between}
+.rate2 .rb{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;background:none;padding:0}
+.rate2 .rb .cir{width:48px;height:48px;border-radius:50%;border:1.6px solid var(--line);background:#fff;display:grid;place-items:center;font-size:18px;font-weight:700;color:var(--ink2);font-family:var(--f-en);transition:transform .08s,background .12s,border-color .12s}
+.rate2 .rb.on .cir{background:var(--accent);border-color:var(--accent);color:#fff}
+.rate2 .rb:active .cir{transform:scale(.9)}
+.rate2 .rb .rlbl{font-size:10px;color:var(--ink3);text-align:center;line-height:1.15}
+.rate2 .rb.on .rlbl{color:var(--accent-ink);font-weight:600}
+
+/* Accordion dimension sections */
+.acc{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+.acc-h{display:flex;align-items:center;gap:10px;padding:14px;user-select:none}
+.acc-h .ah-ic{width:32px;height:32px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.acc-h .ah-t{flex:1;font-weight:700}
+.acc-h .ah-n{font-size:12px;font-weight:700;color:var(--ink2);background:var(--line2);padding:4px 10px;border-radius:20px;direction:ltr}
+.acc-h .ah-chev{color:var(--ink3);transition:transform .2s;flex:none}
+.acc.open .ah-chev{transform:rotate(180deg)}
+.acc-b{display:none;padding:0 14px 6px}
+.acc.open .acc-b{display:block}
+.acc .crit{border:0;border-top:1px solid var(--line2);border-radius:0;padding:14px 0;margin:0;box-shadow:none}
+
+/* Home: section header + 3-dot menu */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:20px 4px 10px}
+.sec-head .sh-l{font-size:13px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.4px}
+.sec-head .sh-r{font-size:13px;color:var(--accent-ink);font-weight:600}
+.obs-card .oc-menu{width:38px;height:38px;border-radius:10px;color:var(--ink3);display:grid;place-items:center;flex:none}
+.obs-card .oc-menu:active{background:var(--line2)}
+.menu-pop{position:fixed;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(17,24,39,.18);padding:6px;z-index:80;min-width:180px}
+.menu-pop button{display:flex;align-items:center;gap:11px;width:100%;padding:12px;border-radius:10px;font-size:15px;text-align:start;color:var(--ink);background:none}
+.menu-pop button:active{background:var(--line2)}
+.menu-pop button.del{color:#dc2626}
+
+/* Feedback char count */
+.cc-count{text-align:end;font-size:12px;color:var(--ink3);margin-top:6px;direction:ltr}
+
+/* ===================== PDF preview viewer ===================== */
+#vPreview{background:#4b5563}
+#vPreview .topbar{background:#fff}
+.pv-wrap{flex:1;position:relative;overflow:hidden;background:#4b5563;touch-action:none}
+.pv-frame{position:absolute;top:0;left:0;border:0;background:#fff;transform-origin:0 0;pointer-events:none;box-shadow:0 3px 24px rgba(0,0,0,.45)}
+.pv-page{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(17,24,39,.74);color:#fff;font-size:12.5px;padding:6px 14px;border-radius:20px;font-family:var(--f-en);z-index:3;direction:ltr}
+.pv-bar{background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:9px 14px calc(10px + env(safe-area-inset-bottom))}
+.pv-ctrls{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.pv-ctrls button{min-width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--ink)}
+.pv-ctrls .pv-pct{min-width:60px;text-align:center;font-size:13px;color:var(--ink2);font-family:var(--f-en);border:0}
+.pv-ctrls .pv-fit{width:auto;padding:0 14px;font-size:14px;font-weight:600}
 </style>
 </head>
 <body class="lang-en">
@@ -259,6 +329,28 @@ body.lang-en .l-en,body.lang-dv .l-dv,body.lang-ar .l-ar{display:inline}
   <div class="steps" id="steps"></div>
   <div class="content" id="stepBody"></div>
   <div class="bottombar"><div class="inner" id="bottomInner"></div></div>
+</div>
+
+<!-- ========== PDF PREVIEW ========== -->
+<div id="vPreview" class="screen hidden">
+  <div class="topbar">
+    <button class="iconbtn" id="pvBack" aria-label="Back"></button>
+    <div class="tb-title" id="pvTitle">PDF Preview</div>
+    <button class="iconbtn" id="pvDl" aria-label="Download"></button>
+  </div>
+  <div class="pv-wrap" id="pvWrap">
+    <div class="pv-page" id="pvPageInd">1 / 1</div>
+    <iframe class="pv-frame" id="pvFrame" title="PDF preview" scrolling="no"></iframe>
+  </div>
+  <div class="pv-bar">
+    <div class="pv-ctrls">
+      <button id="pvOut" aria-label="Zoom out">−</button>
+      <span class="pv-pct" id="pvPct">100%</span>
+      <button id="pvIn" aria-label="Zoom in">+</button>
+      <button class="pv-fit" id="pvFitBtn">Fit</button>
+    </div>
+    <button class="btn primary lg block" id="pvDownload"></button>
+  </div>
 </div>
 
 <!-- ========== OVERLAYS ========== -->
@@ -415,7 +507,13 @@ const MSG = {
   shareErr:{en:"Sharing is not supported. Use Download instead.",dv:"ޝެއަރ ނުކުރެވޭ. ޑައުންލޯޑް ބޭނުންކުރައްވާ.",ar:"المشاركة غير مدعومة. استخدم التنزيل."},
   chooseLang:{en:"Choose language",dv:"ބަސް ހިޔާރުކުރައްވާ",ar:"اختر اللغة"},
   assessedVal:{en:"Assessed",dv:"ވަޒަންކުރެވޭ",ar:"قُيّم"},
-  nonAssessedVal:{en:"Non Assessed",dv:"ނުކުރެވޭ",ar:"لم يُقيّم"}
+  nonAssessedVal:{en:"Non Assessed",dv:"ނުކުރެވޭ",ar:"لم يُقيّم"},
+  open:{en:"Open",dv:"ހުޅުވާ",ar:"فتح"},
+  delete:{en:"Delete",dv:"ފޮހެލާ",ar:"حذف"},
+  viewPdf:{en:"View PDF",dv:"PDF ބަލާ",ar:"عرض PDF"},
+  pdfPreview:{en:"PDF Preview",dv:"PDF ޕްރިވިއު",ar:"معاينة PDF"},
+  fit:{en:"Fit",dv:"ފިޓް",ar:"ملاءمة"},
+  savedCount:{en:"Saved Observations",dv:"ސޭވްކުރި އޮބްޒަވޭޝަންތައް",ar:"الملاحظات المحفوظة"}
 };
 let lang="en";
 const m = k => (MSG[k]?MSG[k][lang]:k);
@@ -453,7 +551,10 @@ const ICONS={
   target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   bookOpen:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
   menu:'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>',
-  trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>'
+  trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
+  chevronD:'<polyline points="6 9 12 15 18 9"/>',
+  eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  dots:'<circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>'
 };
 const icon=(n,cls="")=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
 
@@ -491,7 +592,8 @@ function dimStats(){
 function syncFields(){ FIELDS.forEach(f=>{ const el=$("f_"+f); if(el) cur[f]=(el.value||"").trim(); }); }
 
 /* ============ 5. Screens & language ============ */
-function screen(name){ ["vWelcome","vHome","vForm"].forEach(id=>$(id).classList.toggle("hidden",id!==name)); window.scrollTo(0,0); }
+function screen(name){ ["vWelcome","vHome","vForm","vPreview"].forEach(id=>$(id).classList.toggle("hidden",id!==name)); closeMenus(); window.scrollTo(0,0); }
+function closeMenus(){ document.querySelectorAll(".menu-pop").forEach(p=>p.remove()); }
 function setLang(l){
   lang=l; document.body.className="lang-"+l;
   document.documentElement.lang=l; document.documentElement.dir = l==="en"?"ltr":"rtl";
@@ -499,6 +601,8 @@ function setLang(l){
   renderWelcome();
   if(!$("vHome").classList.contains("hidden")) renderHome();
   if(!$("vForm").classList.contains("hidden")) renderStep();
+  if(!$("vPreview").classList.contains("hidden")) $("pvFrame").srcdoc=buildReportDoc();
+  closeMenus();
 }
 
 function renderWelcome(){
@@ -520,7 +624,7 @@ function renderHome(){
   $("homeTitle").innerHTML=`${m("homeTitle")}<small>${m("appSub")}</small>`;
   let h=`<div class="hero"><div class="hero-ic">${icon("clipboard")}</div><p>${m("heroDesc")}</p></div>
     <button class="btn primary lg block" id="btnNew">${icon("plus")} ${m("newObs")}</button>`;
-  h+=`<div class="sec-label">${m("savedObs")}</div>`;
+  h+=`<div class="sec-head"><span class="sh-l">${m("savedObs")}</span></div>`;
   if(!listCache.length){ h+=`<div class="empty">${m("noSaved")}</div>`; }
   else{
     h+=listCache.map(d=>{
@@ -529,7 +633,7 @@ function renderHome(){
       return `<div class="obs-card" data-id="${esc(d.id)}"><div class="oc-ic">${icon("fileText")}</div>
         <div class="oc-body"><div class="oc-name">${esc(d.student||m("noName"))}</div><div class="oc-sub">${esc(sub)}</div></div>
         <div class="oc-right"><div class="oc-score">${s.sum}/${s.max}</div><span class="badge ${st?'draft':'done'}">${st?m("draft"):m("complete")}</span></div>
-        <button class="oc-del" data-del="${esc(d.id)}" aria-label="Delete">${icon("trash","sm")}</button></div>`;
+        <button class="oc-menu" data-id="${esc(d.id)}" aria-label="Menu">${icon("dots","sm")}</button></div>`;
     }).join("");
   }
   h+=`<div class="home-tools"><button class="btn" id="btnExport">${icon("download")} ${m("backup")}</button><button class="btn" id="btnImport">${icon("upload")} ${m("restore")}</button></div>
@@ -537,9 +641,23 @@ function renderHome(){
   $("homeBody").innerHTML=h;
   $("btnNew").onclick=()=>openForm(null);
   $("homeLang").onclick=openLangSheet; $("homeBack").onclick=()=>screen("vWelcome");
-  $("homeBody").querySelectorAll(".obs-card").forEach(c=>c.onclick=()=>{ const d=listCache.find(x=>x.id===c.dataset.id); if(d) openForm(d); });
-  $("homeBody").querySelectorAll(".oc-del").forEach(b=>b.onclick=async e=>{ e.stopPropagation(); if(confirm(m("askDel"))){ await store.del(b.dataset.del); loadList(); } });
+  $("homeBody").querySelectorAll(".obs-card").forEach(c=>c.onclick=e=>{ if(e.target.closest(".oc-menu")) return; const d=listCache.find(x=>x.id===c.dataset.id); if(d) openForm(d); });
+  $("homeBody").querySelectorAll(".oc-menu").forEach(b=>b.onclick=e=>{ e.stopPropagation(); const d=listCache.find(x=>x.id===b.dataset.id); if(d) openCardMenu(b,d); });
   $("btnExport").onclick=doExport; $("btnImport").onclick=()=>$("importFile").click();
+}
+function openCardMenu(btn,d){
+  closeMenus();
+  const pop=document.createElement("div"); pop.className="menu-pop";
+  pop.innerHTML=`<button data-a="open">${icon("fileText","sm")} ${m("open")}</button>
+    <button data-a="edit">${icon("edit","sm")} ${m("edit")}</button>
+    <button class="del" data-a="del">${icon("trash","sm")} ${m("delete")}</button>`;
+  document.body.append(pop);
+  const r=btn.getBoundingClientRect(), w=pop.offsetWidth;
+  let left=(lang==="en")?(r.right-w):r.left; left=Math.max(8,Math.min(left,window.innerWidth-w-8));
+  pop.style.left=left+"px"; pop.style.top=(r.bottom+6)+"px";
+  pop.onclick=e=>{ const b=e.target.closest("button"); if(!b) return; const a=b.dataset.a; closeMenus();
+    if(a==="del"){ if(confirm(m("askDel"))) store.del(d.id).then(loadList); } else { openForm(d); } };
+  setTimeout(()=>document.addEventListener("pointerdown",function hh(ev){ if(!ev.target.closest(".menu-pop")){ closeMenus(); document.removeEventListener("pointerdown",hh);} }),0);
 }
 
 /* ============ 7. Wizard ============ */
@@ -606,28 +724,30 @@ function renderLesson(){
 }
 function renderCriteria(){
   let h=stepTitle("clipboard","hCriteria",Object.keys(cur.r||{}).length+" / "+N);
+  const lvl=["needsImprovement","satisfactory","good","veryGood","excellent"];
   let idx=0;
-  DIMS.forEach(d=>{
+  DIMS.forEach((d,di)=>{
     let rated=0; const start=idx; d.items.forEach(()=>{ if(cur.r[idx]!=null) rated++; idx++; });
-    h+=`<div class="dim-band"><span class="db-ic">${icon("target","sm")}</span>${one(...d.t)}<span class="db-n">${rated}/${d.items.length}</span></div>`;
-    let gi=start;
+    let gi=start, body="";
     d.items.forEach(it=>{
       const v=cur.r[gi];
-      h+=`<div class="crit"><div class="ct"><span class="cx">${gi+1}.</span>${esc(one(it[0],it[1],it[2]))}</div>
-        <div class="rate" data-i="${gi}">`+[5,4,3,2,1].map(nn=>`<button type="button" data-v="${nn}" class="${v===nn?'on':''}">${nn}</button>`).join("")+`</div></div>`;
+      body+=`<div class="crit"><div class="ct"><span class="cx">${gi+1}.</span>${esc(one(it[0],it[1],it[2]))}</div>
+        <div class="rate2" data-i="${gi}">`+[1,2,3,4,5].map(nn=>`<button type="button" class="rb ${v===nn?'on':''}" data-v="${nn}"><span class="cir">${nn}</span><span class="rlbl">${m(lvl[nn-1])}</span></button>`).join("")+`</div></div>`;
       gi++;
     });
+    h+=`<div class="acc ${di===0?'open':''}"><div class="acc-h"><span class="ah-ic">${icon("target","sm")}</span><span class="ah-t">${esc(one(...d.t))}</span><span class="ah-n">${rated}/${d.items.length}</span><span class="ah-chev">${icon("chevronD","sm")}</span></div><div class="acc-b">${body}</div></div>`;
   });
   return h;
 }
 function renderFeedback(){
-  const fb=(id,key,ph,opt)=>`<div class="fb3"><div class="f3h"><span class="fic">${icon(id==="strengths"?"trending":id==="improvements"?"target":"message")}</span>${m(key)}${opt?`<span class="opt">${m("optional")}</span>`:""}</div>
-    <textarea id="f_${id}" placeholder="${m(ph)}">${esc(cur[id]||"")}</textarea></div>`;
+  const fb=(id,ic,key,ph,opt)=>`<div class="fb3"><div class="f3h"><span class="fic">${icon(ic)}</span>${m(key)}${opt?`<span class="opt">${m("optional")}</span>`:""}</div>
+    <textarea id="f_${id}" maxlength="1000" placeholder="${m(ph)}">${esc(cur[id]||"")}</textarea>
+    <div class="cc-count"><span id="cc_${id}">${(cur[id]||"").length}</span> / 1000</div></div>`;
   return stepTitle("message","hFeedback")
-    + fb("strengths","strengths","phStrength",1)
-    + fb("improvements","improvements","phImprove",1)
-    + fb("comments","obsComments","phObs",1)
-    + fb("teacherComments","teacherComments","phTeacher",1);
+    + fb("comments","message","obsComments","phObs",0)
+    + fb("strengths","trending","strengths","phStrength",1)
+    + fb("improvements","target","improvements","phImprove",1)
+    + fb("teacherComments","user","teacherComments","phTeacher",1);
 }
 function renderReview(){
   const s=score(cur), pk=perfKey(s.pct,s.n);
@@ -673,18 +793,18 @@ function bindStep(){
     el.addEventListener("input",()=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim(); });
   });
   if(step===2){
-    const rows=$("stepBody").querySelector(".step-title").parentElement;
-    $("stepBody").querySelectorAll(".rate").forEach(r=>{
-      r.addEventListener("click",e=>{
-        const b=e.target.closest("button[data-v]"); if(!b) return;
-        const i=r.dataset.i, v=+b.dataset.v;
+    $("stepBody").querySelectorAll(".acc-h").forEach(hh=>hh.onclick=()=>hh.parentElement.classList.toggle("open"));
+    $("stepBody").querySelectorAll(".rate2").forEach(r=>{
+      r.querySelectorAll(".rb").forEach(btn=>btn.onclick=()=>{
+        const i=r.dataset.i, v=+btn.dataset.v;
         if(cur.r[i]===v) delete cur.r[i]; else cur.r[i]=v;
-        r.querySelectorAll("button").forEach(x=>x.classList.toggle("on",+x.dataset.v===cur.r[i]));
-        // update this dimension counter + title count + livebar
-        const bandN=r.closest(".crit").previousElementSibling; // may not be band; recompute all counts cheaply
+        r.querySelectorAll(".rb").forEach(x=>x.classList.toggle("on",+x.dataset.v===cur.r[i]));
         updateCriteriaCounts(); renderBottom();
       });
     });
+  }
+  if(step===3){
+    ["comments","strengths","improvements","teacherComments"].forEach(id=>{ const t=$("f_"+id); if(t) t.addEventListener("input",()=>{ const c=$("cc_"+id); if(c) c.textContent=t.value.length; }); });
   }
   if(step===4){ sigInit("sup"); sigLoad("sup"); const c=$("sigClear"); if(c) c.onclick=()=>{ sigClear("sup"); cur.sig_sup=""; }; }
 }
@@ -692,9 +812,9 @@ function updateCriteriaCounts(){
   const total=Object.keys(cur.r||{}).length;
   const cnt=$("stepBody").querySelector(".st-count"); if(cnt) cnt.textContent=total+" / "+N;
   let idx=0;
-  $("stepBody").querySelectorAll(".dim-band").forEach((band,di)=>{
+  $("stepBody").querySelectorAll(".acc").forEach((acc,di)=>{
     let rated=0; for(let k=0;k<DIMS[di].items.length;k++){ if(cur.r[idx]!=null) rated++; idx++; }
-    const n=band.querySelector(".db-n"); if(n) n.textContent=rated+"/"+DIMS[di].items.length;
+    const n=acc.querySelector(".ah-n"); if(n) n.textContent=rated+"/"+DIMS[di].items.length;
   });
 }
 function syncFromDom(){ $("stepBody") && $("stepBody").querySelectorAll("input,select,textarea").forEach(el=>{ const f=el.id.replace(/^f_/,""); if(f) cur[f]=(el.value||"").trim(); }); }
@@ -725,7 +845,6 @@ function generatePDF(){
   }
   cur.updated=Date.now(); cur.lang=lang; cur.status="complete";
   try{ store.save(cur); }catch(e){}
-  openReport(true);
   showSuccess();
 }
 function showSuccess(){
@@ -733,15 +852,78 @@ function showSuccess(){
     <div class="success"><div class="chk">${icon("check")}</div>
       <h3>${m("pdfSuccess")}</h3><p>${m("pdfReady")}</p>
       <button class="btn primary lg" id="scDownload">${icon("download")} ${m("download")}</button>
-      <button class="btn" id="scShare">${icon("share")} ${m("sharePdf")}</button>
-      <button class="btn" id="scPrint">${icon("printer")} ${m("print")}</button>
+      <button class="btn" id="scView">${icon("eye")} ${m("viewPdf")}</button>
       <button class="btn" id="scNew" style="margin-top:6px">${icon("plus")} ${m("createAnother")}</button></div>`;
   $("successModal").classList.remove("hidden");
   $("scDownload").onclick=()=>openReport(true);
-  $("scShare").onclick=shareReport;
-  $("scPrint").onclick=()=>openReport(true);
+  $("scView").onclick=openPreview;
   $("scNew").onclick=()=>{ $("successModal").classList.add("hidden"); openForm(null); };
   $("successModal").onclick=e=>{ if(e.target.id==="successModal"){ $("successModal").classList.add("hidden"); goHome(); } };
+}
+
+/* ===== In-app PDF preview: scroll + pinch-zoom + pan ===== */
+let pv={scale:1,fit:1,tx:0,ty:0,W:794,H:1123,pts:new Map(),lastDist:0};
+function openPreview(){
+  if(!cur) return;
+  $("successModal").classList.add("hidden");
+  screen("vPreview");
+  $("pvBack").innerHTML=icon("chevronL"); $("pvDl").innerHTML=icon("download");
+  $("pvTitle").textContent=m("pdfPreview"); $("pvFitBtn").textContent=m("fit");
+  $("pvDownload").innerHTML=`${icon("download")} ${m("download")}`;
+  const frame=$("pvFrame");
+  frame.onload=()=>setTimeout(setupPreview,90);
+  frame.srcdoc=buildReportDoc();
+}
+function setupPreview(){
+  const frame=$("pvFrame");
+  try{
+    const doc=frame.contentDocument;
+    frame.style.width=pv.W+"px"; frame.style.height="10px";
+    const h=Math.max(doc.documentElement.scrollHeight, doc.body?doc.body.scrollHeight:0, 1123);
+    pv.H=h; frame.style.height=h+"px";
+    if(doc.fonts&&doc.fonts.ready){ doc.fonts.ready.then(()=>{ const h2=Math.max(doc.documentElement.scrollHeight,doc.body.scrollHeight); if(Math.abs(h2-pv.H)>4){ pv.H=h2; frame.style.height=h2+"px"; pvFit(); } }); }
+  }catch(e){}
+  pvFit();
+}
+function pvClampApply(){
+  const wrap=$("pvWrap"), ww=wrap.clientWidth, wh=wrap.clientHeight;
+  const cw=pv.W*pv.scale, ch=pv.H*pv.scale;
+  if(cw<=ww) pv.tx=(ww-cw)/2; else pv.tx=Math.min(0,Math.max(ww-cw,pv.tx));
+  if(ch<=wh) pv.ty=Math.max(0,(wh-ch)/2); else pv.ty=Math.min(0,Math.max(wh-ch,pv.ty));
+  $("pvFrame").style.transform=`translate(${pv.tx}px,${pv.ty}px) scale(${pv.scale})`;
+  pvPage();
+}
+function pvPage(){
+  const pageH=pv.W*1.4142*pv.scale;
+  const total=Math.max(1,Math.round(pv.H/(pv.W*1.4142)));
+  const curP=Math.min(total,Math.floor(Math.max(0,-pv.ty)/pageH)+1);
+  $("pvPageInd").textContent=curP+" / "+total;
+  $("pvPct").textContent=Math.round(pv.scale/pv.fit*100)+"%";
+}
+function pvFit(){ pv.fit=$("pvWrap").clientWidth/pv.W; pv.scale=pv.fit; pv.tx=0; pv.ty=0; pvClampApply(); }
+function pvZoom(f){ const wrap=$("pvWrap"), mx=wrap.clientWidth/2, my=wrap.clientHeight/2; const ns=Math.min(pv.fit*5,Math.max(pv.fit*0.6,pv.scale*f)); const k=ns/pv.scale; pv.tx=mx-(mx-pv.tx)*k; pv.ty=my-(my-pv.ty)*k; pv.scale=ns; pvClampApply(); }
+function pvInit(){
+  const wrap=$("pvWrap");
+  wrap.onpointerdown=e=>{ wrap.setPointerCapture(e.pointerId); pv.pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); };
+  wrap.onpointermove=e=>{
+    if(!pv.pts.has(e.pointerId)) return;
+    const prev=pv.pts.get(e.pointerId); pv.pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    const pts=[...pv.pts.values()];
+    if(pts.length===1){ pv.tx+=e.clientX-prev.x; pv.ty+=e.clientY-prev.y; pvClampApply(); }
+    else{
+      const a=pts[0], b=pts[1], dist=Math.hypot(a.x-b.x,a.y-b.y);
+      if(pv.lastDist){ const rect=wrap.getBoundingClientRect(), mx=(a.x+b.x)/2-rect.left, my=(a.y+b.y)/2-rect.top;
+        const ns=Math.min(pv.fit*5,Math.max(pv.fit*0.6,pv.scale*dist/pv.lastDist)), k=ns/pv.scale;
+        pv.tx=mx-(mx-pv.tx)*k; pv.ty=my-(my-pv.ty)*k; pv.scale=ns; pvClampApply(); }
+      pv.lastDist=dist;
+    }
+  };
+  const up=e=>{ pv.pts.delete(e.pointerId); if(pv.pts.size<2) pv.lastDist=0; };
+  wrap.onpointerup=up; wrap.onpointercancel=up;
+  $("pvOut").onclick=()=>pvZoom(1/1.25); $("pvIn").onclick=()=>pvZoom(1.25); $("pvFitBtn").onclick=pvFit;
+  $("pvBack").onclick=()=>{ screen("vForm"); showSuccess(); };
+  $("pvDl").onclick=()=>openReport(true); $("pvDownload").onclick=()=>openReport(true);
+  window.addEventListener("resize",()=>{ if(!$("vPreview").classList.contains("hidden")){ pvFit(); } });
 }
 
 /* ============ 9. Language sheet ============ */
@@ -1022,6 +1204,7 @@ async function shareReport(){
 /* ============ 13. Start ============ */
 $("formBack").onclick=()=>go(-1);
 $("formLang").onclick=openLangSheet;
+pvInit();
 let saved="en"; try{ saved=localStorage.getItem("tpobs_lang")||"en" }catch(e){}
 setLang(saved);
 screen("vWelcome");
