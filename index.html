@@ -380,6 +380,43 @@ body.lang-dv .vm-crit,body.lang-ar .vm-crit{font-size:14.5px}
 .miss-note{display:flex;align-items:center;gap:6px;color:#b91c1c;font-size:13px;font-weight:600;margin-top:8px}
 .miss-note .ic{width:15px;height:15px;flex:none}
 body.lang-dv .miss-note,body.lang-ar .miss-note{font-size:14.5px}
+
+/* ===== saved confirmation screen ===== */
+.sv-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 22px;box-shadow:var(--shadow);text-align:center}
+.sv-chk{width:84px;height:84px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:2px auto 16px}
+.sv-chk .ic{width:42px;height:42px;stroke-width:2.5}
+.sv-title{font-size:22px;font-weight:800;margin:0 0 6px}
+.sv-sub{color:var(--ink2);font-size:15px;margin:0 0 22px}
+.sv-box .btn{margin-bottom:10px}
+.btn.plain{background:transparent;border-color:transparent;color:var(--ink2)}
+body.lang-dv .sv-title{font-size:23px}
+body.lang-dv .sv-sub,body.lang-ar .sv-sub{font-size:16px}
+
+/* ===== view observation (detail) ===== */
+.dt-head{text-align:center}
+.dt-name{font-size:21px;font-weight:800}
+.dt-sub{color:var(--ink2);font-size:14.5px;margin-top:2px}
+.dt-head .badge{margin-top:10px}
+.pdf-st{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;margin-bottom:12px}
+.pdf-st.none{color:var(--ink2)}
+.pdf-st.ready{color:var(--accent-ink)}
+.pdf-st.stale{color:var(--gold-ink)}
+.dt-actions{display:flex;flex-direction:column;gap:9px}
+.dt-h{font-weight:800;font-size:15px;margin:0 0 6px}
+.dt-fb h4{margin:12px 0 3px;font-size:13px;font-weight:700;color:var(--accent-ink)}
+.dt-fb:first-of-type h4{margin-top:4px}
+.dt-fb p{margin:0;font-size:14.5px;white-space:pre-wrap;line-height:1.6}
+.dt-fb p.empty{color:var(--ink3)}
+.dt-sig{max-height:90px;max-width:240px;display:block}
+.oc-pdf{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3);margin-top:3px}
+.oc-pdf .ic{width:13px;height:13px}
+.oc-pdf.ready{color:var(--accent-ink)}
+.oc-pdf.stale{color:var(--gold-ink)}
+body.lang-dv .dt-name{font-size:22px}
+body.lang-dv .dt-h,body.lang-ar .dt-h{font-size:17px}
+body.lang-dv .dt-fb p,body.lang-ar .dt-fb p{font-size:16px}
+body.lang-dv .pdf-st,body.lang-ar .pdf-st{font-size:15px}
+body.lang-dv .oc-pdf,body.lang-ar .oc-pdf{font-size:13px}
 </style>
 </head>
 <body class="lang-en">
@@ -444,7 +481,18 @@ body.lang-dv .miss-note,body.lang-ar .miss-note{font-size:14.5px}
 
 <!-- ========== OVERLAYS ========== -->
 <div id="valModal" class="overlay hidden"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="vmTitle" id="valBody"></div></div>
-<div id="successModal" class="overlay hidden"><div class="sheet success" id="successBody"></div></div>
+<!-- ========== OBSERVATION SAVED ========== -->
+<div id="vSaved" class="screen welcome hidden"><div class="wel-card"><div class="sv-box" id="savedBody"></div></div></div>
+
+<!-- ========== VIEW OBSERVATION ========== -->
+<div id="vDetail" class="screen hidden">
+  <div class="topbar">
+    <button class="iconbtn" id="dtBack" aria-label="Back"></button>
+    <div class="tb-title" id="dtTitle"></div>
+    <button class="iconbtn" id="dtLang" aria-label="Language"></button>
+  </div>
+  <div class="content" id="detailBody"></div>
+</div>
 <div id="langSheet" class="overlay hidden"><div class="sheet lang-sheet" id="langSheetBody"></div></div>
 
 <script>
@@ -615,7 +663,25 @@ const MSG = {
   vReview:{en:"Review missing items",dv:"މަދު ތަންތަން ބައްލަވާ",ar:"مراجعة العناصر الناقصة"},
   vClose:{en:"Close",dv:"ބަންދުކުރޭ",ar:"إغلاق"},
   vSelectRating:{en:"Please select a rating.",dv:"މާކްސްއެއް ހިޔާރުކުރައްވާ.",ar:"يرجى اختيار تقييم."},
-  vMore:{en:"more",dv:"އިތުރު",ar:"أخرى"}
+  vMore:{en:"more",dv:"އިތުރު",ar:"أخرى"},
+  /* save -> view -> PDF workflow */
+  savedTitle:{en:"Observation Saved",dv:"އޮބްޒަވޭޝަން ސޭވްކުރެވިއްޖެ",ar:"تم حفظ الملاحظة"},
+  savedSub:{en:"Your lesson observation has been saved successfully.",dv:"ތިޔަ ލެސަން އޮބްޒަވޭޝަން ރަނގަޅަށް ސޭވްކުރެވިއްޖެ.",ar:"تم حفظ ملاحظة الدرس بنجاح."},
+  viewObs:{en:"View Observation",dv:"އޮބްޒަވޭޝަން ބައްލަވާ",ar:"عرض الملاحظة"},
+  backToObs:{en:"Back to Observations",dv:"އޮބްޒަވޭޝަންތަކަށް އެނބުރި",ar:"العودة إلى الملاحظات"},
+  editObs:{en:"Edit Observation",dv:"އޮބްޒަވޭޝަން އެޑިޓްކުރޭ",ar:"تعديل الملاحظة"},
+  saveObs:{en:"Save Observation",dv:"އޮބްޒަވޭޝަން ސޭވްކުރޭ",ar:"حفظ الملاحظة"},
+  saveChanges:{en:"Save Changes",dv:"ބަދަލުތައް ސޭވްކުރޭ",ar:"حفظ التغييرات"},
+  genPdf:{en:"Generate PDF",dv:"PDF ހައްދަވާ",ar:"إنشاء PDF"},
+  genDl:{en:"Generate & Download PDF",dv:"PDF ހަދާފައި ޑައުންލޯޑްކުރޭ",ar:"إنشاء وتنزيل PDF"},
+  genView:{en:"Generate & View PDF",dv:"PDF ހަދާފައި ބައްލަވާ",ar:"إنشاء وعرض PDF"},
+  genNew:{en:"Generate New PDF",dv:"އާ PDF އެއް ހައްދަވާ",ar:"إنشاء PDF جديد"},
+  pdfNone:{en:"PDF not generated",dv:"PDF އަދި ނުހެދޭ",ar:"لم يتم إنشاء PDF"},
+  pdfReadySt:{en:"PDF ready",dv:"PDF ތައްޔާރު",ar:"PDF جاهز"},
+  pdfStale:{en:"Observation updated — PDF needs to be regenerated",dv:"އޮބްޒަވޭޝަން ބަދަލުކުރެވިއްޖެ — PDF އަލުން ހަދަންޖެހޭ",ar:"تم تحديث الملاحظة — يجب إعادة إنشاء PDF"},
+  pdfStaleShort:{en:"PDF outdated",dv:"PDF އާކުރަންޖެހޭ",ar:"PDF يحتاج تحديثاً"},
+  hDetail:{en:"Lesson Observation",dv:"ލެސަން އޮބްޒަވޭޝަން",ar:"ملاحظة الدرس"},
+  view:{en:"View",dv:"ބައްލަވާ",ar:"عرض"}
 };
 let lang="en";
 const m = k => (MSG[k]?MSG[k][lang]:k);
@@ -666,7 +732,7 @@ const backIc=(cls="")=>icon(lang==="en"?"chevronL":"chevronR",cls);
 const nextIc=(cls="")=>icon(lang==="en"?"chevronR":"chevronL",cls);
 
 /* ============ 3. Storage ============ */
-let cur=null, dirty=false, listCache=[], step=0, maxStep=0;
+let cur=null, dirty=false, listCache=[], step=0, maxStep=0, fromDetail=false, isExisting=false, savedId=null;
 const BK="tpobs_demo";
 const store = {
   all(){ try{return JSON.parse(localStorage.getItem(BK)||"[]")}catch(e){return[]} },
@@ -699,7 +765,7 @@ function dimStats(){
 function syncFields(){ FIELDS.forEach(f=>{ const el=$("f_"+f); if(el) cur[f]=(el.value||"").trim(); }); }
 
 /* ============ 5. Screens & language ============ */
-function screen(name){ ["vWelcome","vHome","vForm","vPreview"].forEach(id=>$(id).classList.toggle("hidden",id!==name)); closeMenus(); window.scrollTo(0,0); }
+function screen(name){ ["vWelcome","vHome","vForm","vPreview","vSaved","vDetail"].forEach(id=>$(id).classList.toggle("hidden",id!==name)); closeMenus(); window.scrollTo(0,0); }
 function closeMenus(){ document.querySelectorAll(".menu-pop").forEach(p=>p.remove()); }
 function setLang(l){
   lang=l; document.body.className="lang-"+l;
@@ -709,6 +775,8 @@ function setLang(l){
   if(!$("vHome").classList.contains("hidden")) renderHome();
   if(!$("vForm").classList.contains("hidden")) renderStep();
   if(!$("vPreview").classList.contains("hidden")) $("pvFrame").srcdoc=buildReportDoc();
+  if(!$("vDetail").classList.contains("hidden")) renderDetail();
+  if(!$("vSaved").classList.contains("hidden")) renderSavedScreen();
   closeMenus();
 }
 
@@ -724,7 +792,7 @@ function renderWelcome(){
 }
 
 /* ============ 6. Home ============ */
-function goHome(){ screen("vHome"); loadList(); }
+function goHome(){ fromDetail=false; screen("vHome"); loadList(); }
 async function loadList(){ try{ listCache=await store.list(); }catch(e){ listCache=[]; } renderHome(); }
 function renderHome(){
   $("homeBack").innerHTML=backIc(); $("homeLang").innerHTML=icon("globe");
@@ -736,9 +804,12 @@ function renderHome(){
   else{
     h+=listCache.map(d=>{
       const s=score(d); const st=(d.status==="draft");
+      const ps=pdfState(d);
+      const psTxt = ps==="none"?m("pdfNone") : ps==="ready"?m("pdfReadySt") : m("pdfStaleShort");
       const sub=[d.topic,d.cls,d.date].filter(Boolean).join(" · ");
       return `<div class="obs-card" data-id="${esc(d.id)}"><div class="oc-ic">${icon("fileText")}</div>
-        <div class="oc-body"><div class="oc-name">${esc(d.student||m("noName"))}</div><div class="oc-sub">${esc(sub)}</div></div>
+        <div class="oc-body"><div class="oc-name">${esc(d.student||m("noName"))}</div><div class="oc-sub">${esc(sub)}</div>
+          <div class="oc-pdf ${ps}">${icon(ps==="ready"?"check":"fileText","sm")} ${psTxt}</div></div>
         <div class="oc-right"><div class="oc-score">${s.sum}/${s.max}</div><span class="badge ${st?'draft':'done'}">${st?m("draft"):m("complete")}</span></div>
         <button class="oc-menu" data-id="${esc(d.id)}" aria-label="Menu">${icon("dots","sm")}</button></div>`;
     }).join("");
@@ -748,22 +819,27 @@ function renderHome(){
   $("homeBody").innerHTML=h;
   $("btnNew").onclick=()=>openForm(null);
   $("homeLang").onclick=openLangSheet; $("homeBack").onclick=()=>screen("vWelcome");
-  $("homeBody").querySelectorAll(".obs-card").forEach(c=>c.onclick=e=>{ if(e.target.closest(".oc-menu")) return; const d=listCache.find(x=>x.id===c.dataset.id); if(d) openForm(d); });
+  $("homeBody").querySelectorAll(".obs-card").forEach(c=>c.onclick=e=>{ if(e.target.closest(".oc-menu")) return; const d=listCache.find(x=>x.id===c.dataset.id); if(d) openDetail(d.id); });
   $("homeBody").querySelectorAll(".oc-menu").forEach(b=>b.onclick=e=>{ e.stopPropagation(); const d=listCache.find(x=>x.id===b.dataset.id); if(d) openCardMenu(b,d); });
   $("btnExport").onclick=doExport; $("btnImport").onclick=()=>$("importFile").click();
 }
 function openCardMenu(btn,d){
   closeMenus();
   const pop=document.createElement("div"); pop.className="menu-pop";
-  pop.innerHTML=`<button data-a="open">${icon("fileText","sm")} ${m("open")}</button>
+  const ps=pdfState(d);
+  pop.innerHTML=`<button data-a="view">${icon("eye","sm")} ${m("view")}</button>
     <button data-a="edit">${icon("edit","sm")} ${m("edit")}</button>
+    <button data-a="pdf">${icon("download","sm")} ${ps==="ready"?m("download"):m("genPdf")}</button>
     <button class="del" data-a="del">${icon("trash","sm")} ${m("delete")}</button>`;
   document.body.append(pop);
   const r=btn.getBoundingClientRect(), w=pop.offsetWidth;
   let left=(lang==="en")?(r.right-w):r.left; left=Math.max(8,Math.min(left,window.innerWidth-w-8));
   pop.style.left=left+"px"; pop.style.top=(r.bottom+6)+"px";
   pop.onclick=e=>{ const b=e.target.closest("button"); if(!b) return; const a=b.dataset.a; closeMenus();
-    if(a==="del"){ if(confirm(m("askDel"))) store.del(d.id).then(loadList); } else { openForm(d); } };
+    if(a==="del"){ if(confirm(m("askDel"))) store.del(d.id).then(loadList); }
+    else if(a==="view"){ openDetail(d.id); }
+    else if(a==="pdf"){ cur=JSON.parse(JSON.stringify(d)); cur.r=cur.r||{}; (async()=>{ await downloadPdf(); markPdf(); loadList(); })(); }
+    else { fromDetail=false; openForm(d); } };
   setTimeout(()=>document.addEventListener("pointerdown",function hh(ev){ if(!ev.target.closest(".menu-pop")){ closeMenus(); document.removeEventListener("pointerdown",hh);} }),0);
 }
 
@@ -775,6 +851,7 @@ const STEPS=[
 function openForm(d){
   cur = d ? JSON.parse(JSON.stringify(d)) : {id:Date.now().toString(36)+Math.random().toString(36).slice(2,7), r:{}, assessed:"Assessed", date:new Date().toISOString().slice(0,10), status:"draft"};
   cur.r=cur.r||{};
+  isExisting=!!d; if(!d) fromDetail=false;
   step=0; maxStep=(d&&d.status==="complete")?4:0; dirty=false; screen("vForm"); renderStep();
 }
 function stepDone(i){
@@ -871,15 +948,9 @@ function renderFeedback(){
     + fb("teacherComments","user","teacherComments","phTeacher",1);
 }
 function renderReview(){
-  const s=score(cur), pk=perfKey(s.pct,s.n);
-  const CIRC=2*Math.PI*44, off=CIRC*(1-(s.pct||0)/100);
-  const row=(ic,key,val)=>`<div class="sum-row"><span class="sr-ic">${icon(ic)}</span><span style="flex:1;min-width:0"><span class="sr-k">${m(key)}</span><div class="sr-v">${esc(val)||"—"}</div></span></div>`;
-  const brk=dimStats().map(d=>`<div class="brk-row"><span class="bk-ic">${icon("target","sm")}</span><span class="bk-name">${esc(d.name)}</span><span class="bk-sc">${d.sum} / ${d.max}</span></div>`).join("");
+  const row=(ic,key,val)=>`<div class="sum-row"><span class="sr-ic">${icon(ic)}</span><span style="flex:1;min-width:0"><span class="sr-k">${m(key)}</span><div class="sr-v" dir="auto">${esc(val)||"—"}</div></span></div>`;
   return stepTitle("award","hReview")
-    + `<div class="rev-card"><div class="result-head">
-        <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="50" cy="50" r="44" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/></svg><div class="rc-txt"><span class="rc-pct">${s.n?s.pct+"%":"—"}</span></div></div>
-        <div class="result-main"><div class="rm-score">${s.sum} / ${s.max}</div><div class="rm-sub">${s.n} / ${N} ${m("stCriteria").toLowerCase?m("stCriteria"):""}</div>${pk?`<span class="rm-level">${icon("award","sm")} ${m(pk)}</span>`:""}</div>
-      </div><div class="brk">${brk}</div></div>`
+    + scoreCardHTML()
     + `<div class="rev-card">
         ${row("user","fTeacher",cur.student)}
         ${row("observer","fObserver",cur.supervisor)}
@@ -901,12 +972,12 @@ function renderBottom(){
   if(step<4){
     h+=`<div class="navbtns"><button class="btn" id="btnPrev">${backIc()} ${m("back")}</button><button class="btn primary grow2" id="btnNext">${m("next")} ${nextIc()}</button></div>`;
   }else{
-    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${backIc()} ${m("edit")}</button><button class="btn accent grow2" id="btnGen">${icon("fileText")} ${m("generate")}</button></div>`;
+    h+=`<div class="navbtns"><button class="btn" id="btnPrev">${backIc()} ${m("edit")}</button><button class="btn accent grow2" id="btnGen">${icon("check")} ${m(isExisting?"saveChanges":"saveObs")}</button></div>`;
   }
   inner.innerHTML=h;
   $("btnPrev").onclick=()=>go(-1);
   if($("btnNext")) $("btnNext").onclick=()=>go(1);
-  if($("btnGen")) $("btnGen").onclick=generatePDF;
+  if($("btnGen")) $("btnGen").onclick=saveObservation;
 }
 function bindStep(){
   // inputs sync + live updates
@@ -1038,33 +1109,93 @@ function gotoMissingCrit(ci){
     const b=r.querySelector(".rb"); b&&b.focus();
   },90);
 }
-function generatePDF(){
+/* ===== Save -> confirmation -> view workflow.
+   The saved observation is the primary record; the PDF is an output
+   generated later from it (pdfAt records the last generation). ===== */
+function saveObservation(){
   syncFromDom();
   const sections=collectMissing();
   if(sections.length){ openValidation(sections); return; }
   cur.updated=Date.now(); cur.lang=lang; cur.status="complete";
   try{ store.save(cur); }catch(e){}
-  showSuccess();
+  const id=cur.id;
+  if(fromDetail){ fromDetail=false; openDetail(id); }
+  else openSaved(id);
 }
-function showSuccess(){
-  $("successBody").innerHTML=`<div class="grab"></div>
-    <div class="success"><div class="chk">${icon("check")}</div>
-      <h3>${m("pdfSuccess")}</h3><p>${m("pdfReady")}</p>
-      <button class="btn primary lg" id="scDownload">${icon("download")} ${m("download")}</button>
-      <button class="btn" id="scView">${icon("eye")} ${m("viewPdf")}</button>
-      <button class="btn" id="scNew" style="margin-top:6px">${icon("plus")} ${m("createAnother")}</button></div>`;
-  $("successModal").classList.remove("hidden");
-  $("scDownload").onclick=()=>downloadPdf("scDownload");
-  $("scView").onclick=openPreview;
-  $("scNew").onclick=()=>{ $("successModal").classList.add("hidden"); openForm(null); };
-  $("successModal").onclick=e=>{ if(e.target.id==="successModal"){ $("successModal").classList.add("hidden"); goHome(); } };
+function openSaved(id){ savedId=id; screen("vSaved"); renderSavedScreen(); }
+function renderSavedScreen(){
+  $("savedBody").innerHTML=`
+    <div class="sv-chk">${icon("check")}</div>
+    <h2 class="sv-title">${m("savedTitle")}</h2>
+    <p class="sv-sub">${m("savedSub")}</p>
+    <button class="btn primary lg block" id="svView">${icon("eye")} ${m("viewObs")}</button>
+    <button class="btn lg block" id="svNew">${icon("plus")} ${m("createAnother")}</button>
+    <button class="btn lg block plain" id="svBack">${backIc()} ${m("backToObs")}</button>`;
+  $("svView").onclick=()=>openDetail(savedId);
+  $("svNew").onclick=()=>openForm(null);
+  $("svBack").onclick=goHome;
+}
+/* PDF output state: none -> ready -> stale (edited after generation) */
+function pdfState(d){ if(!d.pdfAt) return "none"; return (d.updated||0)>d.pdfAt ? "stale" : "ready"; }
+function markPdf(){
+  if(!cur) return;
+  cur.pdfAt=Date.now();
+  try{ const a=store.all(), i=a.findIndex(x=>x.id===cur.id); if(i>-1){ a[i].pdfAt=cur.pdfAt; localStorage.setItem(BK,JSON.stringify(a)); } }catch(e){}
+}
+function scoreCardHTML(){
+  const s=score(cur), pk=perfKey(s.pct,s.n);
+  const CIRC=2*Math.PI*44, off=CIRC*(1-(s.pct||0)/100);
+  const brk=dimStats().map(d=>`<div class="brk-row"><span class="bk-ic">${icon("target","sm")}</span><span class="bk-name">${esc(d.name)}</span><span class="bk-sc">${d.sum} / ${d.max}</span></div>`).join("");
+  return `<div class="rev-card"><div class="result-head">
+      <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="50" cy="50" r="44" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/></svg><div class="rc-txt"><span class="rc-pct">${s.n?s.pct+"%":"—"}</span></div></div>
+      <div class="result-main"><div class="rm-score">${s.sum} / ${s.max}</div><div class="rm-sub">${s.n} / ${N} ${m("stCriteria")}</div>${pk?`<span class="rm-level">${icon("award","sm")} ${m(pk)}</span>`:""}</div>
+    </div><div class="brk">${brk}</div></div>`;
+}
+function openDetail(id){
+  const d=store.all().find(x=>x.id===id);
+  if(!d){ goHome(); return; }
+  cur=JSON.parse(JSON.stringify(d)); cur.r=cur.r||{};
+  screen("vDetail"); renderDetail();
+}
+function renderDetail(){
+  if(!cur) return;
+  $("dtBack").innerHTML=backIc(); $("dtLang").innerHTML=icon("globe");
+  $("dtTitle").innerHTML=`${m("hDetail")}<small>${m("appSub")}</small>`;
+  const st=pdfState(cur);
+  const row=(ic,key,val)=>`<div class="sum-row"><span class="sr-ic">${icon(ic)}</span><span style="flex:1;min-width:0"><span class="sr-k">${m(key)}</span><div class="sr-v" dir="auto">${esc(val)||"—"}</div></span></div>`;
+  const fb=(key,val)=>`<div class="dt-fb"><h4>${m(key)}</h4><p dir="auto" class="${val?'':'empty'}">${val?esc(val):"—"}</p></div>`;
+  const stTxt = st==="none"?m("pdfNone") : st==="ready"?m("pdfReadySt") : m("pdfStale");
+  const dlLbl = st==="none"?m("genDl") : st==="ready"?m("download") : m("genNew");
+  const vwLbl = st==="ready"?m("viewPdf") : m("genView");
+  $("detailBody").innerHTML=`
+    <div class="rev-card dt-head">
+      <div class="dt-name" dir="auto">${esc(cur.student||m("noName"))}</div>
+      <div class="dt-sub" dir="auto">${esc([cur.topic,cur.cls].filter(Boolean).join(" · "))}</div>
+      <div class="dt-sub num">${esc(cur.date||"")}</div>
+      <span class="badge ${cur.status==="draft"?'draft':'done'}">${cur.status==="draft"?m("draft"):m("complete")}</span>
+    </div>
+    <div class="rev-card">
+      <div class="pdf-st ${st}">${icon(st==="ready"?"check":st==="stale"?"warn":"fileText","sm")} <span>${stTxt}</span></div>
+      <div class="dt-actions">
+        <button class="btn primary" id="dtDl">${icon("download")} ${dlLbl}</button>
+        <button class="btn" id="dtView">${icon("eye")} ${vwLbl}</button>
+      </div>
+    </div>
+    ${scoreCardHTML()}
+    <div class="rev-card"><div class="dt-h">${m("hTeacher")}</div>${row("user","fTeacher",cur.student)}${row("observer","fObserver",cur.supervisor)}${row("hash","fObsNo",cur.obsNo)}</div>
+    <div class="rev-card"><div class="dt-h">${m("hLesson")}</div>${row("book","fCourse",cur.topic)}${row("layers","fClass",cur.cls)}${row("calendar","fDate",cur.date)}${row("checkCircle","fAssessed",cur.assessed==="Non Assessed"?m("nonAssessedVal"):m("assessedVal"))}</div>
+    <div class="rev-card"><div class="dt-h">${m("hFeedback")}</div>${fb("obsComments",cur.comments)}${fb("strengths",cur.strengths)}${fb("improvements",cur.improvements)}${fb("teacherComments",cur.teacherComments)}</div>
+    ${cur.sig_sup?`<div class="rev-card"><div class="dt-h">${m("signature")}</div><img class="dt-sig" src="${cur.sig_sup}" alt=""></div>`:""}
+    <button class="btn lg block" id="dtEdit" style="margin-top:4px">${icon("edit")} ${m("editObs")}</button>`;
+  $("dtDl").onclick=async()=>{ await downloadPdf("dtDl"); markPdf(); renderDetail(); };
+  $("dtView").onclick=()=>{ markPdf(); openPreview(); };
+  $("dtEdit").onclick=()=>{ fromDetail=true; openForm(cur); };
 }
 
 /* ===== In-app PDF preview: scroll + pinch-zoom + pan ===== */
 let pv={scale:1,fit:1,tx:0,ty:0,W:794,H:1123,pts:new Map(),lastDist:0};
 function openPreview(){
   if(!cur) return;
-  $("successModal").classList.add("hidden");
   screen("vPreview");
   $("pvBack").innerHTML=backIc(); $("pvDl").innerHTML=icon("download"); $("pvPrint").innerHTML=icon("printer");
   $("pvTitle").textContent=m("pdfPreview"); $("pvFitBtn").textContent=m("fit");
@@ -1132,9 +1263,10 @@ function pvInit(){
     pvClampApply();
   },{passive:false});
   $("pvOut").onclick=()=>pvZoom(1/1.25); $("pvIn").onclick=()=>pvZoom(1.25); $("pvFitBtn").onclick=pvFit;
-  $("pvPrint").onclick=()=>openReport(true);
-  $("pvBack").onclick=()=>{ screen("vForm"); showSuccess(); };
-  $("pvDl").onclick=()=>downloadPdf(); $("pvDownload").onclick=()=>downloadPdf("pvDownload");
+  $("pvPrint").onclick=()=>{ openReport(true); markPdf(); };
+  $("pvBack").onclick=()=>{ if(cur&&store.all().some(x=>x.id===cur.id)) openDetail(cur.id); else goHome(); };
+  $("pvDl").onclick=async()=>{ await downloadPdf(); markPdf(); };
+  $("pvDownload").onclick=async()=>{ await downloadPdf("pvDownload"); markPdf(); };
   window.addEventListener("resize",()=>{ if(!$("vPreview").classList.contains("hidden")){ pvFit(); } });
 }
 
@@ -1490,6 +1622,7 @@ async function shareReport(){
 $("formBack").onclick=()=>go(-1);
 $("formLang").onclick=openLangSheet;
 pvInit();
+$("dtBack").onclick=goHome; $("dtLang").onclick=openLangSheet;
 $("steps").addEventListener("click",e=>{ const b=e.target.closest(".st"); if(b&&!b.disabled) goToStep(+b.dataset.i); });
 let saved="en"; try{ saved=localStorage.getItem("tpobs_lang")||"en" }catch(e){}
 setLang(saved);
